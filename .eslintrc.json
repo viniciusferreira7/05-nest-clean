@@ -1,0 +1,25 @@
+{
+  "extends": ["@rocketseat/eslint-config/node"],
+  "plugins": ["eslint-plugin-simple-import-sort"],
+  "rules": {
+    "@typescript-eslint/adjacent-overload-signatures": "off",
+    "simple-import-sort/imports": "error",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ]
+  }
+}
