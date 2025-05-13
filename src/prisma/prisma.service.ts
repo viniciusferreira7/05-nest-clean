@@ -4,6 +4,7 @@ import {
   type OnModuleInit,
 } from '@nestjs/common'
 import { PrismaClient } from 'generated/prisma'
+import { env } from 'src/env'
 
 @Injectable()
 export class PrismaService
@@ -12,7 +13,8 @@ export class PrismaService
 {
   constructor() {
     super({
-      log: ['query', 'error', 'info', 'warn'],
+      log:
+        env.NODE_ENV === 'dev' ? ['query', 'error', 'info', 'warn'] : ['query'],
     })
   }
 
