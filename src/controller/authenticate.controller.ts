@@ -50,7 +50,7 @@ export class AuthenticateController {
     const accessToken = this.jwt.sign({ sub: user.id })
 
     return {
-      access_token: accessToken,
+      access_token: accessToken, // TODO: Test if it works
     }
   }
 }
