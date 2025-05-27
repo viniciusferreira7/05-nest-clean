@@ -1,5 +1,7 @@
 import { Controller, Post, UseGuards } from '@nestjs/common'
 
+import { CurrentUser } from '@/auth/current-user.decorator'
+import type { UserPayload } from '@/auth/jwt.strategy'
 import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
 
 @Controller('/questions')
@@ -7,7 +9,7 @@ import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
 export class CreateQuestionController {
   @Post()
   // @UsePipes(new ZodValidationPipe())
-  async handler() {
-    return 'ok'
+  async handler(@CurrentUser() user: UserPayload) {
+    return user
   }
 }

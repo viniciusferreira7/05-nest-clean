@@ -28,4 +28,4 @@ Content-Type: application/json
 # @name create_question
 POST {{baseURl}}/questions
 Content-Type: application/json
-Authorization: {{AuthToken}}
+Authorization: Bearer {{AuthToken}}
