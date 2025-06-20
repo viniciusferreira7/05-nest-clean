@@ -15,6 +15,7 @@ function generateUniqueDatabaseURL(schemaId: string) {
   const url = new URL(process.env.DATABASE_URL)
 
   url.searchParams.set('schema', schemaId)
+  url.searchParams.set('connect_timeout', '100')
 
   return url.toString()
 }

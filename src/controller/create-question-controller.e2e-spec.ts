@@ -38,7 +38,7 @@ describe('Create question (E2E)', () => {
     const response = await request(app.getHttpServer())
       .post('/questions')
       .send({
-        title: 'New qeustion',
+        title: 'New question',
         content: 'Question content',
       })
       .set('Authorization', `Bearer ${accessToken}`)
@@ -47,13 +47,13 @@ describe('Create question (E2E)', () => {
 
     const questionOnDatabase = await prisma.question.findFirst({
       where: {
-        title: 'New qeustion',
+        title: 'New question',
       },
     })
 
     expect(questionOnDatabase).toEqual(
       expect.objectContaining({
-        title: 'New qeustion',
+        title: 'New question',
         content: 'Question content',
       }),
     )
