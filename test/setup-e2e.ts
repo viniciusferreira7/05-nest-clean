@@ -29,7 +29,7 @@ beforeAll(async () => {
   execSync('pnpm prisma migrate deploy')
 })
 
-beforeAll(async () => {
+afterAll(async () => {
   await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId} CASCADE"`)
   await prisma.$disconnect()
 })
