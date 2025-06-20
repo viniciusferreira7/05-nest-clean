@@ -1,13 +1,11 @@
 import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
-import request, { type name } from 'supertest'
+import request from 'supertest'
 
 import { AppModule } from '@/app.module'
-import { PrismaService } from '@/prisma/prisma.service'
 
 describe('Authenticate (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -15,8 +13,6 @@ describe('Authenticate (E2E)', () => {
     }).compile()
 
     app = moduleRef.createNestApplication()
-
-    prisma = moduleRef.get(PrismaService)
 
     await app.init()
   })
@@ -33,8 +29,9 @@ describe('Authenticate (E2E)', () => {
       password: '123456',
     })
 
-    expect(response.statusCode).toBe(200)
-    expect(response.body).toBe(
+    expect(response.statusCode).toBe(201)
+
+    expect(response.body).toEqual(
       expect.objectContaining({
         access_token: expect.any(String),
       }),
