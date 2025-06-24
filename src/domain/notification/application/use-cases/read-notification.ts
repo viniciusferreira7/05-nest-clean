@@ -11,7 +11,7 @@ interface ReadNotificationUseCaseRequest {
 
 type ReadNotificationUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
-  {}
+  null
 >
 
 export class ReadNotificationUseCase {
@@ -21,9 +21,8 @@ export class ReadNotificationUseCase {
     recipientId,
     notificationId,
   }: ReadNotificationUseCaseRequest): Promise<ReadNotificationUseCaseResponse> {
-    const notification = await this.notificationRepository.findById(
-      notificationId,
-    )
+    const notification =
+      await this.notificationRepository.findById(notificationId)
 
     if (!notification) {
       return left(new ResourceNotFoundError())
@@ -37,6 +36,6 @@ export class ReadNotificationUseCase {
 
     await this.notificationRepository.save(notification)
 
-    return right({})
+    return right(null)
   }
 }

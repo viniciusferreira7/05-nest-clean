@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { DomainEvent } from '../events/domain-event'
 import { DomainEvents } from '../events/domain-events'
 import { UniqueEntityId } from './value-object/unique-entity-id'
@@ -18,12 +17,12 @@ export abstract class Entity<Props> {
     this._id = id ?? new UniqueEntityId(id)
   }
 
-  public equals(entity: any) {
+  public equals(entity: unknown) {
     if (entity === this) {
       return true
     }
 
-    if (entity._id === this._id) {
+    if (entity instanceof Entity && entity._id === this._id) {
       return true
     }
 

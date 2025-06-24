@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Entity } from '../entities/entity'
 import type { UniqueEntityId } from '../entities/value-object/unique-entity-id'
 import { DomainEvent } from './domain-event'
 
-type DomainEventCallback = (event: any) => void
+type DomainEventCallback = (event: unknown) => void
 
 export class DomainEvents {
   private static handlersMap: Record<string, DomainEventCallback[]> = {}
-  private static markedEntities: Entity<any>[] = []
+  private static markedEntities: Entity<unknown>[] = []
 
-  public static markEntityForDispatch(entity: Entity<any>) {
+  public static markEntityForDispatch(entity: Entity<unknown>) {
     const entityFound = !!this.findMarkedEntityByID(entity.id)
 
     if (!entityFound) {
@@ -17,11 +16,11 @@ export class DomainEvents {
     }
   }
 
-  private static dispatchEntityEvents(entity: Entity<any>) {
+  private static dispatchEntityEvents(entity: Entity<unknown>) {
     entity.domainEvents.forEach((event: DomainEvent) => this.dispatch(event))
   }
 
-  private static removeEntityFromMarkedDispatchList(entity: Entity<any>) {
+  private static removeEntityFromMarkedDispatchList(entity: Entity<unknown>) {
     const index = this.markedEntities.findIndex((a) => a.equals(entity))
 
     this.markedEntities.splice(index, 1)
@@ -29,7 +28,7 @@ export class DomainEvents {
 
   private static findMarkedEntityByID(
     id: UniqueEntityId,
-  ): Entity<any> | undefined {
+  ): Entity<unknown> | undefined {
     return this.markedEntities.find((entity) => entity.id.equals(id))
   }
 
