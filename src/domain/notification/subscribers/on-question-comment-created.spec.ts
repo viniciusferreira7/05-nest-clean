@@ -5,7 +5,7 @@ import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memo
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { waitFor } from 'test/utils/wait-for'
-import type { SpyInstance } from 'vitest'
+import type { MockInstance } from 'vitest'
 
 import {
   SendNotificationUseCase,
@@ -22,9 +22,10 @@ let sendNotificationUseCase: SendNotificationUseCase
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 
-let sendNotificationSpy: SpyInstance<
-  [SendNotificationUseCaseRequest],
-  Promise<SendNotificationUseCaseResponse>
+let sendNotificationSpy: MockInstance<
+  (
+    request: SendNotificationUseCaseRequest,
+  ) => Promise<SendNotificationUseCaseResponse>
 >
 
 describe('On Question Comment Created', () => {
