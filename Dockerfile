@@ -1,15 +1,25 @@
-FROM node:20
+FROM node:20-alpine AS base
 
-WORKDIR /usr/src/app
+RUN npm i -g pnpm
 
-COPY package*.json ./
+FROM base AS dependencies
 
-RUN npm install
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
 
+FROM base AS build
+
+WORKDIR /app
 COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
+RUN pnpm build
+RUN pnpm prune --prod
 
-RUN npm run build
+FROM base AS deploy
 
-EXPOSE 3000
+WORKDIR /app
+COPY --from=build /app/dist/ ./dist/
+COPY --from=build /app/node_modules ./node_modules
 
-CMD ["node", "dist/main"]
+CMD [ "node", "dist/main.js" ]
