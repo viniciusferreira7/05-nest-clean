@@ -22,4 +22,4 @@ WORKDIR /app
 COPY --from=build /app/dist/ ./dist/
 COPY --from=build /app/node_modules ./node_modules
 
-CMD [ "node", "dist/main.js" ]
+CMD ["sh", "-c", "pnpm db:deploy && pnpm build" ]

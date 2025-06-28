@@ -31,3 +31,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Build docker image
+        run: docker build -t 05-nest-clean:1.0.0 .
