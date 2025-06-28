@@ -1,3 +1,4 @@
+
 FROM node:20-alpine AS base
 
 RUN npm i -g pnpm
@@ -13,13 +14,22 @@ FROM base AS build
 WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
+
+RUN pnpm prisma generate
+RUN pnpm prisma migrate deploy
+
 RUN pnpm build
+
 RUN pnpm prune --prod
 
 FROM base AS deploy
 
 WORKDIR /app
-COPY --from=build /app/dist/ ./dist/
-COPY --from=build /app/node_modules ./node_modules
 
-CMD ["sh", "-c", "pnpm db:deploy && pnpm build" ]
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/prisma ./prisma
+
+EXPOSE 3333
+
+CMD ["node", "dist/main.js"]
