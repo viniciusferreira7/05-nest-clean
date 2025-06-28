@@ -10,6 +10,16 @@ jobs:
   build:
     name: "Build and push"
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: bitnami/postgresql
+        ports:
+          - 5432:5432
+        env:
+          POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
     strategy:
       matrix:
         node: [20, 22, 22.16.0]
