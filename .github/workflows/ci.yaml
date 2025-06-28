@@ -38,6 +38,14 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: "pnpm"
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U ${{ secrets.DATABASE_USERNAME }}; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+        env:
+          PGPASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
       - name: Install dependencies
         run: pnpm install
