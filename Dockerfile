@@ -1,5 +1,5 @@
 
-FROM node:20-alpine AS base
+FROM node:20.11.1.-alpine AS base
 
 RUN npm i -g pnpm
 
@@ -15,6 +15,8 @@ WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
 
+RUN pnpm prisma generate
+
 RUN pnpm build
 
 RUN pnpm prune --prod
@@ -29,4 +31,4 @@ COPY --from=build /app/prisma ./prisma
 
 EXPOSE 3333
 
-CMD ["node", "dist/main.js"]
+CMD ["pnpm", "start:migrate:prod"]

@@ -15,6 +15,11 @@ export class PrismaService
 {
   constructor(private config: ConfigService<Env, true>) {
     super({
+      datasources: {
+        db: {
+          url: config.get('DATABASE_URL', { infer: true }),
+        },
+      },
       log:
         config.get('NODE_ENV') === 'dev'
           ? ['query', 'error', 'info', 'warn']
