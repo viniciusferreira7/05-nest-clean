@@ -20,6 +20,7 @@ jobs:
           POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
+
     strategy:
       matrix:
         node: [20, 22, 22.16.0]
@@ -38,6 +39,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: "pnpm"
+
       - name: Wait for PostgreSQL to be ready
         run: |
           until pg_isready -h localhost -p 5432 -U ${{ secrets.DATABASE_USERNAME }}; do
@@ -50,7 +52,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build docker image
-        run: docker build -t 05-nest-clean-api:0.0.1 .
+      - name: Run Prisma Migrate
+        run: pnpm prisma migrate deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build docker image
+        run: docker build -t 05-nest-clean-api:0.0.1 .
