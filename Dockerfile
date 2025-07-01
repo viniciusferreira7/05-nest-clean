@@ -15,9 +15,6 @@ WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
 
-RUN pnpm prisma generate
-RUN pnpm prisma migrate deploy
-
 RUN pnpm build
 
 RUN pnpm prune --prod
