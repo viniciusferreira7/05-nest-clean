@@ -32,12 +32,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Tag
+        id: generate_tag
+        run: |
+          SHA=$(echo $GITHUB_SHA | head -c7)
+          echo "sha=$SHA" >> GITHUB_OUTPUT
+
       - name: Create .env file
         run: |
           echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
           echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
           echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+          echo "DATABASE_URL_CONTAINER=${{ secrets.DATABASE_URL_CONTAINER }}" >> .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "IMAGE_TAG=${{ steps.generate_tag.outputs.sha }}" >> .env
 
       - name: Build docker image
         run: pnpm start:containers
