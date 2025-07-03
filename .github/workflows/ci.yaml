@@ -50,7 +50,7 @@ jobs:
           echo "DATABASE_URL_CONTAINER=${{ secrets.DATABASE_URL_CONTAINER }}" >> .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
-      - name: Build docker image
-        run: pnpm start:containers
-        env:
-          IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
+      # - name: Build docker image
+      #   run: pnpm start:containers
+      #   env:
+      #     IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
