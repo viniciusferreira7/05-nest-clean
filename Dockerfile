@@ -1,5 +1,5 @@
 
-FROM node:20.11.1.-alpine AS base
+FROM node:20.11.1-alpine AS base
 
 RUN npm i -g pnpm
 
