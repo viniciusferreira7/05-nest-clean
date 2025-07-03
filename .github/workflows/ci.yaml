@@ -36,7 +36,7 @@ jobs:
         id: generate_tag
         run: |
           SHA=$(echo $GITHUB_SHA | head -c7)
-          echo "sha=$SHA" >> GITHUB_OUTPUT
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
 
       - name: Print image tag
         run: |
