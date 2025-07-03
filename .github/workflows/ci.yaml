@@ -38,6 +38,10 @@ jobs:
           SHA=$(echo $GITHUB_SHA | head -c7)
           echo "sha=$SHA" >> GITHUB_OUTPUT
 
+      - name: Print image tag
+        run: |
+          echo "Image tag: ${{ steps.generate_tag.outputs.sha }}"
+
       - name: Create .env file
         run: |
           echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
