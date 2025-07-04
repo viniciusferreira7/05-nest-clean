@@ -3,7 +3,7 @@ import type { DomainEvent } from '@/core/events/domain-event'
 
 import type { Question } from '../entities/question'
 
-export class QuestionBestQuestionChosenEvent implements DomainEvent {
+export class QuestionBestAnswerChosenEvent implements DomainEvent {
   public occurredAt: Date
   public question: Question
   public bestAnswerId: UniqueEntityId

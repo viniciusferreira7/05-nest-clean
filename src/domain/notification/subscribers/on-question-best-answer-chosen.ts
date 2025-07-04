@@ -1,7 +1,7 @@
 import { DomainEvents } from '@/core/events/domain-events'
 import type { EventHandler } from '@/core/events/event-handler'
 import type { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
-import { QuestionBestQuestionChosenEvent } from '@/domain/forum/enterprise/events/question-best-answer-chosen-event'
+import { QuestionBestAnswerChosenEvent } from '@/domain/forum/enterprise/events/question-best-answer-chosen-event'
 
 import type { SendNotificationUseCase } from '../application/use-cases/send-notification'
 
@@ -16,14 +16,14 @@ export class OnQuestionBestAnswerChosenCreated implements EventHandler {
   setupSubscriptions(): void {
     DomainEvents.register(
       this.sendQuestionBestAnswerNotification.bind(this),
-      QuestionBestQuestionChosenEvent.name,
+      QuestionBestAnswerChosenEvent.name,
     )
   }
 
   private async sendQuestionBestAnswerNotification({
     bestAnswerId,
     question,
-  }: QuestionBestQuestionChosenEvent) {
+  }: QuestionBestAnswerChosenEvent) {
     const answer = await this.answersRepository.findById(
       bestAnswerId.toString(),
     )
