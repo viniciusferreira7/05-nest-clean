@@ -4,8 +4,12 @@ import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
 import type { Answer } from '@/domain/forum/enterprise/entities/answer'
 
+import type { PrismaService } from '../prisma.service'
+
 @Injectable()
 export class PrismaAnswerRepository implements AnswersRepository {
+  constructor(private readonly prisma: PrismaService) {}
+
   findById(id: string): Promise<Answer | null> {
     throw new Error('Method not implemented.')
   }
