@@ -57,6 +57,6 @@ jobs:
           IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
 
       - name: Push image
-        run: docker compose build server
+        run: docker push 05-nest-clean:${{ steps.generate_tag.outputs.sha }}
         env:
           IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
