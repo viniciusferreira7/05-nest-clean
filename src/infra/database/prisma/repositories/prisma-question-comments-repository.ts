@@ -4,7 +4,7 @@ import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
 import type { QuestionComment } from '@/domain/forum/enterprise/entities/question-comment'
 
-import type { PrismaService } from '../prisma.service'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaQuestionCommentsRepository

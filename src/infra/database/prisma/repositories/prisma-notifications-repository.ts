@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import type { NotificationsRepository } from '@/domain/notification/application/repositories/notifications-repository'
 import type { Notification } from '@/domain/notification/enterprise/entities/notification'
 
-import type { PrismaService } from '../prisma.service'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaNotificationsRepository implements NotificationsRepository {
