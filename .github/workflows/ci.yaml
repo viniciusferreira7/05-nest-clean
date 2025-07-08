@@ -58,3 +58,5 @@ jobs:
 
       - name: Push image
         run: docker compose build server
+        env:
+          IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
