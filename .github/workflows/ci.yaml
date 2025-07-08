@@ -55,8 +55,10 @@ jobs:
         run: pnpm start:containers
         env:
           IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
 
       - name: Push image
         run: docker push ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:${{ steps.generate_tag.outputs.sha }}
         env:
           IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}

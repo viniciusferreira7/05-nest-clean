@@ -21,7 +21,7 @@ services:
   server:
     build:
       context: .
-    image: 05-nest-clean:${IMAGE_TAG}
+    image: ${DOCKERHUB_USERNAME}/05-nest-clean:${IMAGE_TAG}
     container_name: 05-nest-clean
     environment:
       DATABASE_USERNAME: ${DATABASE_USERNAME}
