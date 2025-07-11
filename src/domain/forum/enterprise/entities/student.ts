@@ -3,6 +3,8 @@ import type { UniqueEntityId } from '@/core/entities/value-object/unique-entity-
 
 interface StudentProps {
   name: string
+  email: string
+  password: string
 }
 
 export class Student extends Entity<StudentProps> {
