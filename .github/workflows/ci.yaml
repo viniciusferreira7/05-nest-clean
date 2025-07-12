@@ -51,11 +51,6 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build docker image
-        run: pnpm start:containers
-        env:
-          IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
-          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
 
       - name: Push image
         uses: docker/build-push-action@v6
