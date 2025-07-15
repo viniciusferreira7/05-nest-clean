@@ -8,6 +8,7 @@ import { PrismaClient } from 'generated/prisma'
 const prisma = new PrismaClient()
 
 function generateUniqueDatabaseURL(schemaId: string) {
+  console.log({ env: process.env })
   if (!process.env.DATABASE_URL) {
     throw new Error('Please provide a DATABASE_URL environment variable')
   }
