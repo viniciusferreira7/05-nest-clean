@@ -27,8 +27,6 @@ beforeAll(async () => {
 
   process.env.DATABASE_URL = databaseUrl
 
-  console.log({ databaseUrl })
-
   execSync('pnpm prisma migrate deploy')
 })
 

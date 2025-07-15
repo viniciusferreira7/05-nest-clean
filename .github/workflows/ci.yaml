@@ -50,6 +50,13 @@ jobs:
       - name: Start database container
         run: pnpm prestart:dev
 
+      - name: Wait for DB ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U ${{ secrets.DATABASE_USERNAME }}; do
+            echo "Waiting for database to be ready..."
+            sleep 2
+          done
+
       - name: Run Prisma Generate
         run: pnpm prisma generate
 
