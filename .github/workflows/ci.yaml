@@ -12,6 +12,16 @@ jobs:
     name: Build and push
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: bitnami/postgresql
+        ports:
+          - 5432:5432
+        env:
+          POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
+
     strategy:
       matrix:
         node: [22.16.0]
@@ -37,27 +47,8 @@ jobs:
       - name: Run unit test
         run: pnpm test
 
-      - name: Start database container
-        run: pnpm prestart:dev
-        env:
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          DATABASE_URL_CONTAINER: ${{ secrets.DATABASE_URL_CONTAINER }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-
       - name: Run Prisma Generate
         run: pnpm prisma generate
-        env:
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          DATABASE_URL_CONTAINER: ${{ secrets.DATABASE_URL_CONTAINER }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
 
       - name: Run E2E tests
         run: pnpm test:e2e
