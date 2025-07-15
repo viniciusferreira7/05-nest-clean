@@ -12,16 +12,6 @@ jobs:
     name: Build and push
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: bitnami/postgresql
-        ports:
-          - 5432:5432
-        env:
-          POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
-
     strategy:
       matrix:
         node: [22.16.0]
@@ -41,25 +31,30 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: "pnpm"
 
+      - name: Create .env file
+        run: |
+          echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+          echo "DATABASE_URL_CONTAINER=${{ secrets.DATABASE_URL_CONTAINER }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "JWT_PRIVATE_KEY=${{ secrets.JWT_PRIVATE_KEY }}" >> .env
+          echo "JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }}" >> .env
+
       - name: Install dependencies
         run: pnpm install
 
       - name: Run unit test
         run: pnpm test
 
+      - name: Start database container
+        run: pnpm prestart:dev
+
       - name: Run Prisma Generate
         run: pnpm prisma generate
 
       - name: Run E2E tests
         run: pnpm test:e2e
-        env:
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          DATABASE_URL_CONTAINER: ${{ secrets.DATABASE_URL_CONTAINER }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
 
       - name: Generate Tag
         id: generate_tag
@@ -77,4 +72,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:${{ steps.generate_tag.outputs.sha }},${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:${{ steps.generate_tag.outputs.sha }}, ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:latest

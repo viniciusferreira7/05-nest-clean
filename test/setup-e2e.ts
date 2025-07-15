@@ -14,8 +14,6 @@ function generateUniqueDatabaseURL(schemaId: string) {
 
   const url = new URL(process.env.DATABASE_URL)
 
-  console.log({ url })
-
   url.searchParams.set('schema', schemaId)
   url.searchParams.set('connect_timeout', '100')
 
@@ -29,14 +27,9 @@ beforeAll(async () => {
 
   process.env.DATABASE_URL = databaseUrl
 
-  execSync('pnpm prisma migrate deploy', {
-    env: {
-      ...process.env,
-      DATABASE_URL: databaseUrl,
-    },
-  })
+  console.log({ databaseUrl })
 
-  console.log({ env: process.env })
+  execSync('pnpm prisma migrate deploy')
 })
 
 afterAll(async () => {
