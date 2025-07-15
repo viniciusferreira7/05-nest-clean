@@ -1,0 +1,44 @@
+services:
+  05-nest-clean-postgresql:
+    container_name: 05-nest-clean-postgresql
+    image: bitnami/postgresql:17.2.0
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRESQL_USERNAME: ${DATABASE_USERNAME}
+      POSTGRESQL_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRESQL_DATABASE: ${DATABASE_NAME}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    networks:
+      - 05-nest-clean-network
+    volumes:
+      - 05_nest_clean_data:/bitnami/postgresql
+
+  server:
+    build:
+      context: .
+    image: ${DOCKERHUB_USERNAME}/05-nest-clean:${IMAGE_TAG}
+    container_name: 05-nest-clean
+    environment:
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_URL: ${DATABASE_URL_CONTAINER}
+    ports:
+      - 3333:3333
+    depends_on:
+      05-nest-clean-postgresql:
+        condition: service_healthy
+    networks:
+      - 05-nest-clean-network
+
+networks:
+  05-nest-clean-network:
+    driver: bridge
+
+volumes:
+  05_nest_clean_data:

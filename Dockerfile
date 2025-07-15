@@ -1,15 +1,34 @@
-FROM node:20
 
-WORKDIR /usr/src/app
+FROM node:20.11.1-alpine AS base
 
-COPY package*.json ./
+RUN npm i -g pnpm
 
-RUN npm install
+FROM base AS dependencies
 
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
+
+FROM base AS build
+
+WORKDIR /app
 COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
 
-RUN npm run build
+RUN pnpm prisma generate
 
-EXPOSE 3000
+RUN pnpm build
 
-CMD ["node", "dist/main"]
+RUN pnpm prune --prod
+
+FROM base AS deploy
+
+WORKDIR /app
+
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/prisma ./prisma
+
+EXPOSE 3333
+
+CMD ["pnpm", "start:migrate:prod"]
