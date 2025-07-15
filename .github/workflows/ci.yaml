@@ -47,6 +47,9 @@ jobs:
       - name: Start database container
         run: pnpm prestart:dev
 
+      - name: Run Prisma Generate
+        run: pnpm prisma generate
+
       - name: Run E2E tests
         run: pnpm test:e2e
 
