@@ -8,12 +8,13 @@ import { PrismaClient } from 'generated/prisma'
 const prisma = new PrismaClient()
 
 function generateUniqueDatabaseURL(schemaId: string) {
-  console.log({ env: process.env })
   if (!process.env.DATABASE_URL) {
     throw new Error('Please provide a DATABASE_URL environment variable')
   }
 
   const url = new URL(process.env.DATABASE_URL)
+
+  console.log({ url })
 
   url.searchParams.set('schema', schemaId)
   url.searchParams.set('connect_timeout', '100')
@@ -34,6 +35,8 @@ beforeAll(async () => {
       DATABASE_URL: databaseUrl,
     },
   })
+
+  console.log({ env: process.env })
 })
 
 afterAll(async () => {
