@@ -36,6 +36,12 @@ jobs:
       - name: Run unit test
         run: pnpm test
 
+      - name: Start database container
+        run: pnpm prestart:dev
+
+      - name: Run E2E tests
+        run: pnpm test:e2e
+
       - name: Generate Tag
         id: generate_tag
         run: |
