@@ -10,6 +10,9 @@ export default defineConfig({
     setupFiles: ['./test/setup-e2e.ts'],
     testTimeout: 10000,
   },
+  optimizeDeps: {
+    exclude: ['generated/prisma'],
+  },
   plugins: [
     tsConfigPaths(),
     swc.vite({
