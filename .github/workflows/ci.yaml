@@ -60,6 +60,7 @@ jobs:
       - name: Test DB connection with psql
         run: |
           sudo apt-get install -y postgresql-client
+          echo "Testing connection..."
           PGPASSWORD=${{ secrets.DATABASE_PASSWORD }} \
             psql -h localhost -U ${{ secrets.DATABASE_USERNAME }} -d ${{ secrets.DATABASE_NAME }} -c '\l'
         env:
