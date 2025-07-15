@@ -28,7 +28,12 @@ beforeAll(async () => {
 
   process.env.DATABASE_URL = databaseUrl
 
-  execSync('pnpm prisma migrate deploy')
+  execSync('pnpm prisma migrate deploy', {
+    env: {
+      ...process.env,
+      DATABASE_URL: databaseUrl,
+    },
+  })
 })
 
 afterAll(async () => {
