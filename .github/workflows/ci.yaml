@@ -57,6 +57,16 @@ jobs:
             sleep 2
           done
 
+      - name: Test DB connection with psql
+        run: |
+          sudo apt-get install -y postgresql-client
+          PGPASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+            psql -h localhost -U ${{ secrets.DATABASE_USERNAME }} -d ${{ secrets.DATABASE_NAME }} -c '\l'
+        env:
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+
       - name: Run Prisma Generate
         run: pnpm prisma generate
 
