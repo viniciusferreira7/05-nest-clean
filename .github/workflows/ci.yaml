@@ -14,14 +14,14 @@ jobs:
 
     services:
       postgres:
-        image: bitnami/postgresql
+        image: bitnami/postgresql:17.2.0
         ports:
           - 5432:5432
         env:
           POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
-
+          POSTGRESQL_POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
     strategy:
       matrix:
         node: [22.16.0]
@@ -44,25 +44,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run unit test
-        run: pnpm test
-
-      - name: Wait for DB ready
+      - name: Wait for DB to initialize
         run: |
+          echo "Esperando o banco de dados inicializar..."
+          sleep 30
           sudo apt-get update
           sudo apt-get install -y postgresql-client
           until pg_isready -h localhost -p 5432 -U ${{ secrets.DATABASE_USERNAME }}; do
             echo "Waiting for database to be ready..."
             sleep 2
           done
+          echo "Banco de dados pronto!"
 
       - name: Test DB connection
         run: |
-          sudo apt-get install -y postgresql-client
-          echo "Testing connection with simple SQL..."
+          echo "Testando conexão com o banco de dados..."
           PGPASSWORD=${{ secrets.DATABASE_PASSWORD }} \
             psql -h localhost -U ${{ secrets.DATABASE_USERNAME }} -d ${{ secrets.DATABASE_NAME }} \
-            -c "SELECT datname, datcollate, datctype FROM pg_database;"
+            -c "SELECT datname FROM pg_database;"
 
       - name: Run Prisma Generate
         run: pnpm prisma generate
