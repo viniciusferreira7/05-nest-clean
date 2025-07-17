@@ -12,15 +12,15 @@ jobs:
     name: Build and push
     runs-on: ubuntu-latest
 
-    # services:
-    #   postgres:
-    #     image: bitnami/postgresql
-    #     ports:
-    #       - 5432:5432
-    #     env:
-    #       POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-    #       POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-    #       POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
+    services:
+      postgres:
+        image: bitnami/postgresql
+        ports:
+          - 5432:5432
+        env:
+          POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
 
     strategy:
       matrix:
@@ -47,35 +47,35 @@ jobs:
       - name: Run unit test
         run: pnpm test
 
-      # - name: Wait for DB ready
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y postgresql-client
-      #     until pg_isready -h localhost -p 5432 -U ${{ secrets.DATABASE_USERNAME }}; do
-      #       echo "Waiting for database to be ready..."
-      #       sleep 2
-      #     done
+      - name: Wait for DB ready
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          until pg_isready -h localhost -p 5432 -U ${{ secrets.DATABASE_USERNAME }}; do
+            echo "Waiting for database to be ready..."
+            sleep 2
+          done
 
-      # - name: Test DB connection
-      #   run: |
-      #     sudo apt-get install -y postgresql-client
-      #     echo "Testing connection with simple SQL..."
-      #     PGPASSWORD=${{ secrets.DATABASE_PASSWORD }} \
-      #       psql -h localhost -U ${{ secrets.DATABASE_USERNAME }} -d ${{ secrets.DATABASE_NAME }} \
-      #       -c "SELECT datname, datcollate, datctype FROM pg_database;"
+      - name: Test DB connection
+        run: |
+          sudo apt-get install -y postgresql-client
+          echo "Testing connection with simple SQL..."
+          PGPASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+            psql -h localhost -U ${{ secrets.DATABASE_USERNAME }} -d ${{ secrets.DATABASE_NAME }} \
+            -c "SELECT datname, datcollate, datctype FROM pg_database;"
 
-      # - name: Run Prisma Generate
-      #   run: pnpm prisma generate
+      - name: Run Prisma Generate
+        run: pnpm prisma generate
 
-      # - name: Run E2E tests
-      #   run: pnpm test:e2e
-      #   env:
-      #     DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-      #     DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      #     DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      #     JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-      #     JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      - name: Run E2E tests
+        run: pnpm test:e2e
+        env:
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
 
       - name: Generate Tag
         id: generate_tag
