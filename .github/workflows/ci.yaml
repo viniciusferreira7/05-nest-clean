@@ -12,16 +12,6 @@ jobs:
     name: Build and push
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: bitnami/postgresql:17.2.0
-        ports:
-          - 5432:5432
-        env:
-          POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
-          POSTGRESQL_POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
     strategy:
       matrix:
         node: [22.16.0]
@@ -44,17 +34,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Wait for DB to initialize
+      - name: Start database container
+        run: docker compose --env-file .env up -d 05-nest-clean-postgresql 
+
+      - name: Wait for user role to exist
         run: |
-          echo "Esperando o banco de dados inicializar..."
-          sleep 30
           sudo apt-get update
           sudo apt-get install -y postgresql-client
-          until pg_isready -h localhost -p 5432 -U ${{ secrets.DATABASE_USERNAME }}; do
-            echo "Waiting for database to be ready..."
+          echo "Aguardando role '${{ secrets.DATABASE_USERNAME }}' ser criada..."
+          for i in {1..30}; do
+            RESULT=$(PGPASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+              psql -h localhost -U postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='${{ secrets.DATABASE_USERNAME }}'")
+            if [ "$RESULT" = "1" ]; then
+              echo "✅ Role '${{ secrets.DATABASE_USERNAME }}' encontrada!"
+              break
+            fi
+            echo "Tentativa $i: Role ainda não criada... aguardando 2s"
             sleep 2
           done
-          echo "Banco de dados pronto!"
 
       - name: Test DB connection
         run: |

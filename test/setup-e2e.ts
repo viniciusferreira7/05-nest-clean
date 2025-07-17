@@ -12,10 +12,7 @@ function generateUniqueDatabaseURL(schemaId: string) {
     throw new Error('Please provide a DATABASE_URL environment variable')
   }
 
-  // const url = new URL(process.env.DATABASE_URL)
-  const url = new URL(
-    'postgresql://docker:docker@localhost:5432/05nestclean?schema=public',
-  )
+  const url = new URL(process.env.DATABASE_URL)
 
   url.searchParams.set('schema', schemaId)
   url.searchParams.set('connect_timeout', '100')
@@ -29,8 +26,6 @@ beforeAll(async () => {
   const databaseUrl = generateUniqueDatabaseURL(schemaId)
 
   process.env.DATABASE_URL = databaseUrl
-
-  console.log({ databaseUrl })
 
   execSync('pnpm prisma migrate deploy')
 })
