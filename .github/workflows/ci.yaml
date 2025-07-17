@@ -35,7 +35,7 @@ jobs:
         run: pnpm install
 
       - name: Start database container
-        run: docker compose --env-file .env up -d 05-nest-clean-postgresql 
+        run: docker compose  up -d 05-nest-clean-postgresql 
 
       - name: Wait for user role to exist
         run: |
