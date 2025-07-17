@@ -13,7 +13,9 @@ function generateUniqueDatabaseURL(schemaId: string) {
   }
 
   // const url = new URL(process.env.DATABASE_URL)
-  const url = new URL("postgresql://docker:docker@localhost:5432/05nestclean?schema=public")
+  const url = new URL(
+    'postgresql://docker:docker@localhost:5432/05nestclean?schema=public',
+  )
 
   url.searchParams.set('schema', schemaId)
   url.searchParams.set('connect_timeout', '100')
