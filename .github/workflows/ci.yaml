@@ -16,6 +16,17 @@ jobs:
       matrix:
         node: [22.16.0]
 
+        
+    services:
+      postgres:
+        image: bitnami/postgresql:17.2.0
+        ports:
+          - 5432:5432
+        env:
+          POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -34,41 +45,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Start database container
-        run: docker compose --env-file .env up -d 05-nest-clean-postgresql
-
-      - name: Wait for user role to exist
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client
-          echo "Aguardando role 'docker' ser criada..."
-          for i in {1..30}; do
-            RESULT=$(PGPASSWORD=docker \
-              psql -h localhost -U docker -tAc "SELECT 1 FROM pg_roles WHERE rolname='docker'")
-            if [ "$RESULT" = "1" ]; then
-              echo "✅ Role 'docker' encontrada!"
-              break
-            fi
-            echo "Tentativa $i: Role ainda não criada... aguardando 2s"
-            sleep 2
-          done
-
-      - name: Test DB connection
-        run: |
-          echo "Testando conexão com o banco de dados..."
-          PGPASSWORD=docker \
-            psql -h localhost -U docker -d 05nestclean \
-            -c "SELECT datname FROM pg_database;"
-
       - name: Run Prisma Generate
         run: pnpm prisma generate
 
       - name: Run E2E tests
         run: pnpm test:e2e
         env:
-          DATABASE_USERNAME: docker
-          DATABASE_PASSWORD: docker
-          DATABASE_NAME: 05nestclean
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
           JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
