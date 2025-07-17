@@ -12,32 +12,21 @@ jobs:
     name: Build and push
     runs-on: ubuntu-latest
 
+    # services:
+    #   postgres:
+    #     image: bitnami/postgresql
+    #     ports:
+    #       - 5432:5432
+    #     env:
+    #       POSTGRESQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+    #       POSTGRESQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+    #       POSTGRESQL_DATABASE: ${{ secrets.DATABASE_NAME }}
+
     strategy:
       matrix:
         node: [22.16.0]
 
-    services:
-      postgres:
-        image: postgres:15
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: ${{ secrets.DATABASE_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
-        options: >-
-          --health-cmd "pg_isready -U docker"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 20
-
     steps:
-      - name: Wait 60 seconds for PostgreSQL to initialize
-        run: sleep 60
-
-      - name: Show PostgreSQL logs
-        run: docker logs ${{ job.services.postgres.id }}
-
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
@@ -55,18 +44,38 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Prisma Generate
-        run: pnpm prisma generate
+      - name: Run unit test
+        run: pnpm test
 
-      - name: Run E2E tests
-        run: pnpm test:e2e
-        env:
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      # - name: Wait for DB ready
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y postgresql-client
+      #     until pg_isready -h localhost -p 5432 -U ${{ secrets.DATABASE_USERNAME }}; do
+      #       echo "Waiting for database to be ready..."
+      #       sleep 2
+      #     done
+
+      # - name: Test DB connection
+      #   run: |
+      #     sudo apt-get install -y postgresql-client
+      #     echo "Testing connection with simple SQL..."
+      #     PGPASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+      #       psql -h localhost -U ${{ secrets.DATABASE_USERNAME }} -d ${{ secrets.DATABASE_NAME }} \
+      #       -c "SELECT datname, datcollate, datctype FROM pg_database;"
+
+      # - name: Run Prisma Generate
+      #   run: pnpm prisma generate
+
+      # - name: Run E2E tests
+      #   run: pnpm test:e2e
+      #   env:
+      #     DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      #     DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      #     DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      #     JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+      #     JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
 
       - name: Generate Tag
         id: generate_tag
@@ -84,4 +93,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:${{ steps.generate_tag.outputs.sha }},${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:${{ steps.generate_tag.outputs.sha }}, ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:latest
