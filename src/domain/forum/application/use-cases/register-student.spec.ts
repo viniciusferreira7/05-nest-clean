@@ -16,35 +16,37 @@ describe('Register student', () => {
     sut = new RegisterStudentUseCase(inMemoryStudentsRepository, fakerHasher)
   })
 
-  it.skip('should be able to register new student', async () => {
+  it('should be able to register new student', async () => {
     const result = await sut.execute({
       name: 'John Doe',
       email: 'john.doe@example.com',
       password: '123456',
     })
 
-    expect(result.isRight()).toEqual(
-      expect.objectContaining({
-        student: {
-          name: 'John Doe',
-          email: 'john.doe@example.com',
-          password: '123456-hashed',
-        },
-      }),
-    )
-  })
+    expect(result.isRight()).toBe(true)
 
-  it.skip('should be able to register new student', async () => {
-    const result = await sut.execute({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: '123456',
-    })
-
-    expect(result.isRight()).toEqual(
+    expect(result.value).toEqual(
       expect.objectContaining({
         student: inMemoryStudentsRepository.items[0],
       }),
     )
+  })
+
+  it('should hash student upon registered', async () => {
+    const result = await sut.execute({
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: '123456',
+    })
+
+    expect(result.isRight()).toBe(true)
+
+    const hashedPassword = await fakerHasher.hash('123456')
+
+    expect(result.value).toEqual({
+      student: expect.objectContaining({
+        password: hashedPassword,
+      }),
+    })
   })
 })
