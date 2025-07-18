@@ -1,6 +1,7 @@
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
+import { StudentAlreadyExistsError } from './erros/student-already-exists-error'
 import { RegisterStudentUseCase } from './register-student'
 
 let inMemoryStudentsRepository: InMemoryStudentsRepository
@@ -48,5 +49,22 @@ describe('Register student', () => {
         password: hashedPassword,
       }),
     })
+  })
+
+  it('should not be to register with same credentials twice', async () => {
+    await sut.execute({
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: '123456',
+    })
+
+    const result = await sut.execute({
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: '123456',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).instanceOf(StudentAlreadyExistsError)
   })
 })
