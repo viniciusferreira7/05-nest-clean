@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common'
 
 import { type Either, left, right } from '@/core/either'
 
-import type { Encrypter } from '../cryptography/encrypter'
-import type { HashCompare } from '../cryptography/hash-compare'
+import { Encrypter } from '../cryptography/encrypter'
+import { HashCompare } from '../cryptography/hash-compare'
 import { StudentsRepository } from '../repositories/students-repository'
 import { WrongCredentialsError } from './erros/wrong-credentials-error'
 
