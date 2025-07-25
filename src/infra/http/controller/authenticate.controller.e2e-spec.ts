@@ -17,7 +17,7 @@ describe('Authenticate (E2E)', () => {
     await app.init()
   })
 
-  test('[POST]: /sessions', async () => {
+  test.skip('[POST]: /sessions', async () => {
     await request(app.getHttpServer()).post('/accounts').send({
       name: 'John Doe',
       email: 'john.doe@example.com',

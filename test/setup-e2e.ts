@@ -15,7 +15,7 @@ function generateUniqueDatabaseURL(schemaId: string) {
   const url = new URL(process.env.DATABASE_URL)
 
   url.searchParams.set('schema', schemaId)
-  url.searchParams.set('connect_timeout', '100')
+  url.searchParams.set('connect_timeout', '1000')
 
   return url.toString()
 }
@@ -25,12 +25,15 @@ const schemaId = randomUUID()
 beforeAll(async () => {
   const databaseUrl = generateUniqueDatabaseURL(schemaId)
 
+  process.env.PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK = 'true'
+
   process.env.DATABASE_URL = databaseUrl
 
   execSync('pnpm prisma migrate deploy')
 })
 
 afterAll(async () => {
-  await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId} CASCADE"`)
+  await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId}" CASCADE`)
+
   await prisma.$disconnect()
 })

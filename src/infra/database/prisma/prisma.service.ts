@@ -14,6 +14,7 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(private config: ConfigService<Env, true>) {
+    console.log({ env: config.get('DATABASE_URL') })
     super({
       datasources: {
         db: {

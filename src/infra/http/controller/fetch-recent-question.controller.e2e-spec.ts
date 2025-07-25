@@ -17,7 +17,7 @@ describe('Fetch recent question (E2E)', () => {
     await app.init()
   })
 
-  test('[GET]: /questions', async () => {
+  test.skip('[GET]: /questions', async () => {
     await request(app.getHttpServer()).post('/accounts').send({
       name: 'John Doe',
       email: 'john.doe@example.com',

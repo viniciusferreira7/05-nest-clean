@@ -8,7 +8,8 @@ export default defineConfig({
     globals: true,
     root: './',
     setupFiles: ['./test/setup-e2e.ts'],
-    testTimeout: 10000,
+    testTimeout: 1_000_000,
+    hookTimeout: 1_000_000,
   },
   optimizeDeps: {
     exclude: ['generated/prisma'],

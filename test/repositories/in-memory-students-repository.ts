@@ -12,6 +12,5 @@ export class InMemoryStudentsRepository implements StudentsRepository {
 
   async create(student: Student): Promise<void> {
     this.items.push(student)
-    console.log(this.items)
   }
 }

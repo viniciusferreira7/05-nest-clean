@@ -25,7 +25,5 @@ export function makeStudent(
     id,
   )
 
-  console.log({ in: student })
-
   return student
 }
