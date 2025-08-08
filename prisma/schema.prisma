@@ -79,15 +79,16 @@ model Comment {
 }
 
 model Attachment {
-  id         String   @id @default(uuid())
+  id         String  @id @default(uuid())
   title      String
   url        String
-  createdAt  DateTime @default(now()) @map("created_at")
-  questionId String?  @map("question_id")
-  answerId   String?  @map("answer_id")
+  questionId String? @map("question_id")
+  answerId   String? @map("answer_id")
 
   question Question? @relation(fields: [questionId], references: [id])
   answer   Answer?   @relation(fields: [answerId], references: [id])
 
   @@map("attachments")
 }
+
+//TODO: Run migrations
