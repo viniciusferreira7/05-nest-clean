@@ -4,22 +4,22 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { Question } from '../../enterprise/entities/question'
 import type { QuestionsRepository } from '../repositories/questions-repository'
 
-interface GetQuestionUseCaseRequest {
+interface GetQuestionBySlugUseCaseRequest {
   slug: string
 }
 
-type GetQuestionUseCaseResponse = Either<
+type GetQuestionBySlugUseCaseResponse = Either<
   ResourceNotFoundError,
   {
     question: Question
   }
 >
-export class GetQuestionUseCase {
+export class GetQuestionBySlugUseCase {
   constructor(private questionRepository: QuestionsRepository) {}
 
   async execute({
     slug,
-  }: GetQuestionUseCaseRequest): Promise<GetQuestionUseCaseResponse> {
+  }: GetQuestionBySlugUseCaseRequest): Promise<GetQuestionBySlugUseCaseResponse> {
     const question = await this.questionRepository.findBySlug(slug)
 
     if (!question) {

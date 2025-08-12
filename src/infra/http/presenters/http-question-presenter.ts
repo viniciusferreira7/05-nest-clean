@@ -1,6 +1,6 @@
 import type { Question } from '@/domain/forum/enterprise/entities/question'
 
-export class HttpQuestionPresenter {
+export class QuestionPresenter {
   static toHttp(question: Question) {
     return {
       id: question.id.toString(),

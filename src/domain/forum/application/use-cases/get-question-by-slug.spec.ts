@@ -5,12 +5,12 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 import { Slug } from '../../enterprise/entities/value-object/slug'
-import { GetQuestionUseCase } from './get-question-by-slug'
+import { GetQuestionBySlugUseCase } from './get-question-by-slug'
 
 let inMemoryQuestionRepository: InMemoryQuestionsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 
-let sut: GetQuestionUseCase
+let sut: GetQuestionBySlugUseCase
 
 describe('Get question by slug', () => {
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('Get question by slug', () => {
     inMemoryQuestionRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
     )
-    sut = new GetQuestionUseCase(inMemoryQuestionRepository)
+    sut = new GetQuestionBySlugUseCase(inMemoryQuestionRepository)
   })
 
   it('should be able to get question by slug', async () => {
