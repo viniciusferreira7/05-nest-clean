@@ -91,7 +91,7 @@ jobs:
         if: false
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ''
+          role-to-assume: ${{ secrets.AWS_ROLE_ID }}
           aws-region: aws-east-2
 
       - name: Login to AWS ECR
