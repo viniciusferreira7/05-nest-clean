@@ -55,12 +55,15 @@ jobs:
           aws-region: aws-east-2
 
       - name: Login to AWS ECR
-        id: login-ecr
+        id: login_ecr
         if: false
         uses: aws-actions/amazon-ecr-login@v2
 
-      # - name: Push image
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     push: true
-      #     tags: ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:${{ steps.generate_tag.outputs.sha }}, ${{ vars.DOCKERHUB_USERNAME }}/05-nest-clean:latest
+      - name: Build docker image
+        if: false
+        env: 
+          REGISTRY: ${{ steps.login_ecr.outputs.registry }}
+          TAG: ${{ steps.generate_tag.outputs.sha }}
+        run: |
+          docker build -t $REGISTRY/05-nest-clean:$TAG .
+          docker push $REGISTRY/05-nest-clean:$TAG
