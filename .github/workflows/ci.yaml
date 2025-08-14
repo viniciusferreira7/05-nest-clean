@@ -65,5 +65,5 @@ jobs:
           REGISTRY: ${{ steps.login_ecr.outputs.registry }}
           TAG: ${{ steps.generate_tag.outputs.sha }}
         run: |
-          docker build -t $REGISTRY/05-nest-clean:$TAG .
-          docker push $REGISTRY/05-nest-clean:$TAG
+          docker build -t $REGISTRY/nest-clean-api:$TAG .
+          docker push $REGISTRY/nest-clean-api:$TAG
