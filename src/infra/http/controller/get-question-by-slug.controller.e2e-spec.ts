@@ -2,12 +2,14 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
 import { makeModuleRef } from 'test/factories/make-module-ref'
+import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
 
 describe('Get question by slug (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
   let studentFactory: StudentFactory
+  let questionFactory: QuestionFactory
 
   beforeAll(async () => {
     const moduleRef = await makeModuleRef()
@@ -15,6 +17,7 @@ describe('Get question by slug (E2E)', () => {
     app = moduleRef.createNestApplication()
     studentFactory = moduleRef.get(StudentFactory)
     jwt = moduleRef.get(JwtService)
+    questionFactory = moduleRef.get(QuestionFactory)
 
     await app.init()
   })
@@ -24,29 +27,14 @@ describe('Get question by slug (E2E)', () => {
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    const questions = [
-      {
-        title: 'New question 1',
-        content: 'Question content 1',
-      },
-      {
-        title: 'New question 2',
-        content: 'Question content 2',
-      },
-      {
+    await Promise.all([
+      questionFactory.makePrismaQuestion({ authorId: user?.id }),
+      questionFactory.makePrismaQuestion({ authorId: user?.id }),
+      questionFactory.makePrismaQuestion({
         title: 'New question 3',
-        content: 'Question content 3',
-      },
-    ]
-
-    await Promise.all(
-      questions.map((question) =>
-        request(app.getHttpServer())
-          .post('/questions')
-          .send(question)
-          .set('Authorization', `Bearer ${accessToken}`),
-      ),
-    )
+        authorId: user?.id,
+      }),
+    ])
 
     const response = await request(app.getHttpServer())
       .get('/questions/new-question-3')
