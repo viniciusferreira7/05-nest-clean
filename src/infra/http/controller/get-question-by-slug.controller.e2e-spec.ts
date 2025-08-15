@@ -1,31 +1,28 @@
 import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
 import { makeModuleRef } from 'test/factories/make-module-ref'
+import { StudentFactory } from 'test/factories/make-student'
 
 describe('Get question by slug (E2E)', () => {
   let app: INestApplication
+  let jwt: JwtService
+  let studentFactory: StudentFactory
 
   beforeAll(async () => {
     const moduleRef = await makeModuleRef()
 
     app = moduleRef.createNestApplication()
+    studentFactory = moduleRef.get(StudentFactory)
+    jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
 
   test('[GET]: /questions/:slug', async () => {
-    await request(app.getHttpServer()).post('/accounts').send({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: '123456',
-    })
+    const user = await studentFactory.makePrismaStudent()
 
-    const {
-      body: { access_token: accessToken },
-    } = await request(app.getHttpServer()).post('/sessions').send({
-      email: 'john.doe@example.com',
-      password: '123456',
-    })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const questions = [
       {
