@@ -1,53 +1,46 @@
 import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
 import { makeModuleRef } from 'test/factories/make-module-ref'
+import { QuestionFactory } from 'test/factories/make-question'
+import { StudentFactory } from 'test/factories/make-student'
 
 describe('Fetch recent questions (E2E)', () => {
   let app: INestApplication
+  let jwt: JwtService
+  let studentFactory: StudentFactory
+  let questionFactory: QuestionFactory
 
   beforeAll(async () => {
-    app = (await makeModuleRef()).createNestApplication()
+    const moduleRef = await makeModuleRef()
+
+    app = moduleRef.createNestApplication()
+    studentFactory = moduleRef.get(StudentFactory)
+    jwt = moduleRef.get(JwtService)
+    questionFactory = moduleRef.get(QuestionFactory)
 
     await app.init()
   })
 
   test('[GET]: /questions', async () => {
-    await request(app.getHttpServer()).post('/accounts').send({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: '123456',
-    })
+    const user = await studentFactory.makePrismaStudent()
 
-    const {
-      body: { access_token: accessToken },
-    } = await request(app.getHttpServer()).post('/sessions').send({
-      email: 'john.doe@example.com',
-      password: '123456',
-    })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    const questions = [
-      {
+    await Promise.all([
+      questionFactory.makePrismaQuestion({
         title: 'New question 1',
-        content: 'Question content 1',
-      },
-      {
+        authorId: user?.id,
+      }),
+      questionFactory.makePrismaQuestion({
         title: 'New question 2',
-        content: 'Question content 2',
-      },
-      {
+        authorId: user?.id,
+      }),
+      questionFactory.makePrismaQuestion({
         title: 'New question 3',
-        content: 'Question content 3',
-      },
-    ]
-
-    await Promise.all(
-      questions.map((question) =>
-        request(app.getHttpServer())
-          .post('/questions')
-          .send(question)
-          .set('Authorization', `Bearer ${accessToken}`),
-      ),
-    )
+        authorId: user?.id,
+      }),
+    ])
 
     const response = await request(app.getHttpServer())
       .get('/questions?page=1')
@@ -57,9 +50,18 @@ describe('Fetch recent questions (E2E)', () => {
 
     expect(response.body).toEqual({
       questions: [
-        expect.objectContaining({ title: 'New question 3' }),
-        expect.objectContaining({ title: 'New question 2' }),
-        expect.objectContaining({ title: 'New question 1' }),
+        expect.objectContaining({
+          title: 'New question 3',
+          slug: 'new-question-3',
+        }),
+        expect.objectContaining({
+          title: 'New question 2',
+          slug: 'new-question-2',
+        }),
+        expect.objectContaining({
+          title: 'New question 1',
+          slug: 'new-question-1',
+        }),
       ],
     })
 
