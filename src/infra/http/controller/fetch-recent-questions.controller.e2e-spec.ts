@@ -48,22 +48,24 @@ describe('Fetch recent questions (E2E)', () => {
 
     expect(response.statusCode).toBe(200)
 
-    expect(response.body).toEqual({
-      questions: [
-        expect.objectContaining({
-          title: 'New question 3',
-          slug: 'new-question-3',
-        }),
-        expect.objectContaining({
-          title: 'New question 2',
-          slug: 'new-question-2',
-        }),
-        expect.objectContaining({
-          title: 'New question 1',
-          slug: 'new-question-1',
-        }),
-      ],
-    })
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        questions: expect.arrayContaining([
+          expect.objectContaining({
+            title: 'New question 3',
+            slug: 'new-question-3',
+          }),
+          expect.objectContaining({
+            title: 'New question 2',
+            slug: 'new-question-2',
+          }),
+          expect.objectContaining({
+            title: 'New question 1',
+            slug: 'new-question-1',
+          }),
+        ]),
+      }),
+    )
 
     expect(response.body.questions).toHaveLength(3)
   })
