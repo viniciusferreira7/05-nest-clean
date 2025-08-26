@@ -13,6 +13,8 @@ import { CreateAccountController } from './controller/create-account.controller'
 import { CreateQuestionController } from './controller/create-question.controller'
 import { FetchRecentQuestionsController } from './controller/fetch-recent-questions.controller'
 import { GetQuestionBySlugController } from './controller/get-question-by-slug.controller'
+import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question'
+import { EditQuestionController } from './controller/edit-question.controller'
 
 @Module({
   imports: [DatabaseModule, cryptographyModule],
@@ -20,11 +22,13 @@ import { GetQuestionBySlugController } from './controller/get-question-by-slug.c
     CreateAccountController,
     AuthenticateController,
     CreateQuestionController,
+    EditQuestionController,
     FetchRecentQuestionsController,
     GetQuestionBySlugController,
   ],
   providers: [
     CreateQuestionUseCase,
+    EditQuestionUseCase,
     FetchRecentQuestionsUseCase,
     RegisterStudentUseCase,
     AuthenticateStudentUseCase,

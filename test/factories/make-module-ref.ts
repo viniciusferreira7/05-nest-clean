@@ -9,12 +9,15 @@ import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 import { QuestionFactory } from './make-question'
 import { StudentFactory } from './make-student'
+import { AnswerFactory } from './make-answer'
+import { QuestionCommentFactory } from './make-question-comment'
+import { AnswerCommentFactory } from './make-answer-comment'
 
 export async function makeModuleRef(): Promise<TestingModule> {
   const databaseUrl = process.env.DATABASE_URL
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule, DatabaseModule],
-    providers: [StudentFactory, QuestionFactory],
+    providers: [StudentFactory, QuestionFactory, AnswerFactory, QuestionCommentFactory, AnswerCommentFactory],
   })
     .overrideProvider(PrismaService)
     .useFactory({
