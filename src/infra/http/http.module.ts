@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-
+import { AnswerQuestionUseCase } from "@/domain/forum/application/use-cases/answer-question";
 import { AuthenticateStudentUseCase } from "@/domain/forum/application/use-cases/authenticate-student";
 import { CreateQuestionUseCase } from "@/domain/forum/application/use-cases/create-question";
 import { DeleteQuestionUseCase } from "@/domain/forum/application/use-cases/delete-question";
@@ -9,6 +9,7 @@ import { GetQuestionBySlugUseCase } from "@/domain/forum/application/use-cases/g
 import { RegisterStudentUseCase } from "@/domain/forum/application/use-cases/register-student";
 import { cryptographyModule } from "../cryptography/cryptography.module";
 import { DatabaseModule } from "../database/database.module";
+import { AnswerQuestionController } from "./controller/answer-question.controller";
 import { AuthenticateController } from "./controller/authenticate.controller";
 import { CreateAccountController } from "./controller/create-account.controller";
 import { CreateQuestionController } from "./controller/create-question.controller";
@@ -27,6 +28,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		FetchRecentQuestionsController,
 		GetQuestionBySlugController,
 		DeleteQuestionController,
+		AnswerQuestionController,
 	],
 	providers: [
 		CreateQuestionUseCase,
@@ -36,6 +38,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		AuthenticateStudentUseCase,
 		GetQuestionBySlugUseCase,
 		DeleteQuestionUseCase,
+		AnswerQuestionUseCase,
 	],
 })
 export class HttpModule {}
