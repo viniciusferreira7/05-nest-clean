@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { type Either, left, right } from "@/core/either";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
-import type { QuestionsRepository } from "../repositories/questions-repository";
+import { QuestionsRepository } from "../repositories/questions-repository";
 
 interface DeleteQuestionUseCaseRequest {
 	authorId: string;
@@ -25,7 +25,6 @@ export class DeleteQuestionUseCase {
 		const question = await this.questionRepository.findById(questionId);
 
 		if (!question) {
-			console.log("aqui");
 			return left(new ResourceNotFoundError());
 		}
 

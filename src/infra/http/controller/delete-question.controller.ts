@@ -4,7 +4,6 @@ import {
 	Delete,
 	HttpCode,
 	Param,
-	Put,
 } from "@nestjs/common";
 
 import { DeleteQuestionUseCase } from "@/domain/forum/application/use-cases/delete-question";
