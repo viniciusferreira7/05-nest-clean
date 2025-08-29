@@ -1,31 +1,31 @@
-import type { UniqueEntityId } from '@/core/entities/value-object/unique-entity-id'
-import type { Optional } from '@/core/types/optional'
+import type { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
+import type { Optional } from "@/core/types/optional";
 
-import { AnswerCommentCreatedEvent } from '../events/answer-comment-created-event'
-import { Comment, type CommentProps } from './comment'
+import { AnswerCommentCreatedEvent } from "../events/answer-comment-created-event";
+import { Comment, type CommentProps } from "./comment";
 
 export interface AnswerCommentProps extends CommentProps {
-  answerId: UniqueEntityId
+	answerId: UniqueEntityId;
 }
 
 export class AnswerComment extends Comment<AnswerCommentProps> {
-  get answerId() {
-    return this.props.answerId
-  }
+	get answerId() {
+		return this.props.answerId;
+	}
 
-  static create(
-    props: Optional<AnswerCommentProps, 'createdAt'>,
-    id?: UniqueEntityId,
-  ) {
-    const answerComment = new AnswerComment(
-      { ...props, createdAt: props.createdAt ?? new Date() },
-      id,
-    )
+	static create(
+		props: Optional<AnswerCommentProps, "createdAt">,
+		id?: UniqueEntityId,
+	) {
+		const answerComment = new AnswerComment(
+			{ ...props, createdAt: props.createdAt ?? new Date() },
+			id,
+		);
 
-    answerComment.addDomainEvent(
-      new AnswerCommentCreatedEvent(answerComment, answerComment.answerId),
-    )
+		answerComment.addDomainEvent(
+			new AnswerCommentCreatedEvent(answerComment, answerComment.answerId),
+		);
 
-    return answerComment
-  }
+		return answerComment;
+	}
 }

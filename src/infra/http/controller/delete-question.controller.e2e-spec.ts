@@ -4,50 +4,47 @@ import request from "supertest";
 import { makeModuleRef } from "test/factories/make-module-ref";
 import { QuestionFactory } from "test/factories/make-question";
 import { StudentFactory } from "test/factories/make-student";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
 
-describe("Get question by slug (E2E)", () => {
+describe("Delete question (E2E)", () => {
 	let app: INestApplication;
-	let jwt: JwtService;
+	let prisma: PrismaService;
 	let studentFactory: StudentFactory;
 	let questionFactory: QuestionFactory;
+	let jwt: JwtService;
 
 	beforeAll(async () => {
 		const moduleRef = await makeModuleRef();
 
 		app = moduleRef.createNestApplication();
+		prisma = moduleRef.get(PrismaService);
 		studentFactory = moduleRef.get(StudentFactory);
-		jwt = moduleRef.get(JwtService);
 		questionFactory = moduleRef.get(QuestionFactory);
+		jwt = moduleRef.get(JwtService);
 
 		await app.init();
 	});
 
-	test("[GET]: /questions/:slug", async () => {
+	test("[DELETE]: /questions/:id", async () => {
 		const user = await studentFactory.makePrismaStudent();
+		const question = await questionFactory.makePrismaQuestion({
+			authorId: user.id,
+		});
 
 		const accessToken = jwt.sign({ sub: user.id.toString() });
 
-		await Promise.all([
-			questionFactory.makePrismaQuestion({ authorId: user?.id }),
-			questionFactory.makePrismaQuestion({ authorId: user?.id }),
-			questionFactory.makePrismaQuestion({
-				title: "New question 3",
-				authorId: user?.id,
-			}),
-		]);
-
 		const response = await request(app.getHttpServer())
-			.get("/questions/new-question-3")
+			.delete(`/questions/${question.id}`)
+			.send()
 			.set("Authorization", `Bearer ${accessToken}`);
 
-		expect(response.statusCode).toBe(200);
+		expect(response.statusCode).toBe(204);
 
-		expect(response.body).toEqual({
-			question: expect.objectContaining({
-				title: "New question 3",
-				slug: "new-question-3",
-			}),
+		const questionOnDatabase = await prisma.question.findUnique({
+			where: { id: question.id.toString() },
 		});
+
+		expect(questionOnDatabase).toBeNull();
 	});
 
 	afterAll(async () => {

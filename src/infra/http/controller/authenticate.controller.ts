@@ -1,57 +1,57 @@
 import {
-  BadRequestException,
-  Body,
-  Controller,
-  Post,
-  UnauthorizedException,
-  UsePipes,
-} from '@nestjs/common'
-import { z } from 'zod'
+	BadRequestException,
+	Body,
+	Controller,
+	Post,
+	UnauthorizedException,
+	UsePipes,
+} from "@nestjs/common";
+import { z } from "zod";
 
-import { AuthenticateStudentUseCase } from '@/domain/forum/application/use-cases/authenticate-student'
-import { WrongCredentialsError } from '@/domain/forum/application/use-cases/erros/wrong-credentials-error'
-import { Public } from '@/infra/auth/public'
-import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation.pipe'
+import { AuthenticateStudentUseCase } from "@/domain/forum/application/use-cases/authenticate-student";
+import { WrongCredentialsError } from "@/domain/forum/application/use-cases/erros/wrong-credentials-error";
+import { Public } from "@/infra/auth/public";
+import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation.pipe";
 
 const AuthenticateBodySchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-})
+	email: z.string().email(),
+	password: z.string().min(6),
+});
 
-type AuthenticateBodySchema = z.infer<typeof AuthenticateBodySchema>
+type AuthenticateBodySchema = z.infer<typeof AuthenticateBodySchema>;
 
 @Public()
-@Controller('/sessions')
+@Controller("/sessions")
 export class AuthenticateController {
-  constructor(
-    private readonly authenticateStudent: AuthenticateStudentUseCase,
-  ) {}
+	constructor(
+		private readonly authenticateStudent: AuthenticateStudentUseCase,
+	) {}
 
-  @Post()
-  @UsePipes(new ZodValidationPipe(AuthenticateBodySchema))
-  async handle(@Body() body: AuthenticateBodySchema) {
-    const { email, password } = body
+	@Post()
+	@UsePipes(new ZodValidationPipe(AuthenticateBodySchema))
+	async handle(@Body() body: AuthenticateBodySchema) {
+		const { email, password } = body;
 
-    const result = await this.authenticateStudent.execute({
-      email,
-      password,
-    })
+		const result = await this.authenticateStudent.execute({
+			email,
+			password,
+		});
 
-    if (result.isLeft()) {
-      const error = result.value
+		if (result.isLeft()) {
+			const error = result.value;
 
-      switch (error.constructor) {
-        case WrongCredentialsError:
-          throw new UnauthorizedException(error.message)
-        default:
-          throw new BadRequestException(error.message)
-      }
-    }
+			switch (error.constructor) {
+				case WrongCredentialsError:
+					throw new UnauthorizedException(error.message);
+				default:
+					throw new BadRequestException(error.message);
+			}
+		}
 
-    const { accessToken } = result.value
+		const { accessToken } = result.value;
 
-    return {
-      access_token: accessToken,
-    }
-  }
+		return {
+			access_token: accessToken,
+		};
+	}
 }

@@ -1,40 +1,40 @@
-import { type Either, left, right } from '@/core/either'
-import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
-import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-
-import type { QuestionsRepository } from '../repositories/questions-repository'
-import { Injectable } from '@nestjs/common'
+import { Injectable } from "@nestjs/common";
+import { type Either, left, right } from "@/core/either";
+import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
+import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
+import type { QuestionsRepository } from "../repositories/questions-repository";
 
 interface DeleteQuestionUseCaseRequest {
-  authorId: string
-  questionId: string
+	authorId: string;
+	questionId: string;
 }
 
 type DeleteQuestionUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
-  null
->
+	ResourceNotFoundError | NotAllowedError,
+	null
+>;
 
 @Injectable()
 export class DeleteQuestionUseCase {
-  constructor(private questionRepository: QuestionsRepository) {}
+	constructor(private questionRepository: QuestionsRepository) {}
 
-  async execute({
-    authorId,
-    questionId,
-  }: DeleteQuestionUseCaseRequest): Promise<DeleteQuestionUseCaseResponse> {
-    const question = await this.questionRepository.findById(questionId)
+	async execute({
+		authorId,
+		questionId,
+	}: DeleteQuestionUseCaseRequest): Promise<DeleteQuestionUseCaseResponse> {
+		const question = await this.questionRepository.findById(questionId);
 
-    if (!question) {
-      return left(new ResourceNotFoundError())
-    }
+		if (!question) {
+			console.log("aqui");
+			return left(new ResourceNotFoundError());
+		}
 
-    if (authorId !== question.authorId.toString()) {
-      return left(new NotAllowedError())
-    }
+		if (authorId !== question.authorId.toString()) {
+			return left(new NotAllowedError());
+		}
 
-    await this.questionRepository.delete(question)
+		await this.questionRepository.delete(question);
 
-    return right(null)
-  }
+		return right(null);
+	}
 }

@@ -1,43 +1,42 @@
-import { faker } from '@faker-js/faker'
+import { faker } from "@faker-js/faker";
 
-import { UniqueEntityId } from '@/core/entities/value-object/unique-entity-id'
+import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import {
-  QuestionComment,
-  type QuestionCommentProps,
-} from '@/domain/forum/enterprise/entities/question-comment'
-import { PrismaQuestionCommentMapper } from '@/infra/database/prisma/mappers/prisma-question-comment-mapper'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
-import { Injectable } from '@nestjs/common'
+	QuestionComment,
+	type QuestionCommentProps,
+} from "@/domain/forum/enterprise/entities/question-comment";
+import { PrismaQuestionCommentMapper } from "@/infra/database/prisma/mappers/prisma-question-comment-mapper";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { Injectable } from "@nestjs/common";
 
 export function makeQuestionComment(
-  override: Partial<QuestionCommentProps> = {},
-  id?: UniqueEntityId,
+	override: Partial<QuestionCommentProps> = {},
+	id?: UniqueEntityId,
 ) {
-  const questionComment = QuestionComment.create(
-    {
-      authorId: new UniqueEntityId(),
-      questionId: new UniqueEntityId(),
-      content: faker.lorem.text(),
-      ...override,
-    },
-    id,
-  )
+	const questionComment = QuestionComment.create(
+		{
+			authorId: new UniqueEntityId(),
+			questionId: new UniqueEntityId(),
+			content: faker.lorem.text(),
+			...override,
+		},
+		id,
+	);
 
-  return questionComment
+	return questionComment;
 }
 
 @Injectable()
 export class QuestionCommentFactory {
-  constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) {}
 
-  async makePrismaQuestionComment(data?: Partial<QuestionCommentProps>) {
-    const QuestionComment = makeQuestionComment(data)
+	async makePrismaQuestionComment(data?: Partial<QuestionCommentProps>) {
+		const QuestionComment = makeQuestionComment(data);
 
-    await this.prisma.comment.create({
-      data: PrismaQuestionCommentMapper.toPrisma(QuestionComment),
-    })
+		await this.prisma.comment.create({
+			data: PrismaQuestionCommentMapper.toPrisma(QuestionComment),
+		});
 
-    return QuestionComment
-  }
+		return QuestionComment;
+	}
 }
-

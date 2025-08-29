@@ -1,79 +1,79 @@
-import type { Entity } from '../entities/entity'
-import type { UniqueEntityId } from '../entities/value-object/unique-entity-id'
-import { DomainEvent } from './domain-event'
+import type { Entity } from "../entities/entity";
+import type { UniqueEntityId } from "../entities/value-object/unique-entity-id";
+import { DomainEvent } from "./domain-event";
 
-type DomainEventCallback = (event: unknown) => void
+type DomainEventCallback = (event: unknown) => void;
 
 export class DomainEvents {
-  private static handlersMap: Record<string, DomainEventCallback[]> = {}
-  private static markedEntities: Entity<unknown>[] = []
+	private static handlersMap: Record<string, DomainEventCallback[]> = {};
+	private static markedEntities: Entity<unknown>[] = [];
 
-  public static markEntityForDispatch(entity: Entity<unknown>) {
-    const entityFound = !!this.findMarkedEntityByID(entity.id)
+	public static markEntityForDispatch(entity: Entity<unknown>) {
+		const entityFound = !!this.findMarkedEntityByID(entity.id);
 
-    if (!entityFound) {
-      this.markedEntities.push(entity)
-    }
-  }
+		if (!entityFound) {
+			this.markedEntities.push(entity);
+		}
+	}
 
-  private static dispatchEntityEvents(entity: Entity<unknown>) {
-    entity.domainEvents.forEach((event: DomainEvent) => this.dispatch(event))
-  }
+	private static dispatchEntityEvents(entity: Entity<unknown>) {
+		entity.domainEvents.forEach((event: DomainEvent) => this.dispatch(event));
+	}
 
-  private static removeEntityFromMarkedDispatchList(entity: Entity<unknown>) {
-    const index = this.markedEntities.findIndex((a) => a.equals(entity))
+	private static removeEntityFromMarkedDispatchList(entity: Entity<unknown>) {
+		const index = this.markedEntities.findIndex((a) => a.equals(entity));
 
-    this.markedEntities.splice(index, 1)
-  }
+		this.markedEntities.splice(index, 1);
+	}
 
-  private static findMarkedEntityByID(
-    id: UniqueEntityId,
-  ): Entity<unknown> | undefined {
-    return this.markedEntities.find((entity) => entity.id.equals(id))
-  }
+	private static findMarkedEntityByID(
+		id: UniqueEntityId,
+	): Entity<unknown> | undefined {
+		return this.markedEntities.find((entity) => entity.id.equals(id));
+	}
 
-  public static dispatchEventsForEntity(id: UniqueEntityId) {
-    const entity = this.findMarkedEntityByID(id)
+	public static dispatchEventsForEntity(id: UniqueEntityId) {
+		const entity = this.findMarkedEntityByID(id);
 
-    if (entity) {
-      this.dispatchEntityEvents(entity)
-      entity.clearEvents()
-      this.removeEntityFromMarkedDispatchList(entity)
-    }
-  }
+		if (entity) {
+			this.dispatchEntityEvents(entity);
+			entity.clearEvents();
+			this.removeEntityFromMarkedDispatchList(entity);
+		}
+	}
 
-  public static register(
-    callback: DomainEventCallback,
-    eventClassName: string,
-  ) {
-    const wasEventRegisteredBefore = eventClassName in this.handlersMap
+	public static register(
+		callback: DomainEventCallback,
+		eventClassName: string,
+	) {
+		const wasEventRegisteredBefore = eventClassName in this.handlersMap;
 
-    if (!wasEventRegisteredBefore) {
-      this.handlersMap[eventClassName] = []
-    }
+		if (!wasEventRegisteredBefore) {
+			this.handlersMap[eventClassName] = [];
+		}
 
-    this.handlersMap[eventClassName].push(callback)
-  }
+		this.handlersMap[eventClassName].push(callback);
+	}
 
-  public static clearHandlers() {
-    this.handlersMap = {}
-  }
+	public static clearHandlers() {
+		this.handlersMap = {};
+	}
 
-  public static clearMarkedEntities() {
-    this.markedEntities = []
-  }
+	public static clearMarkedEntities() {
+		this.markedEntities = [];
+	}
 
-  private static dispatch(event: DomainEvent) {
-    const eventClassName: string = event.constructor.name
+	private static dispatch(event: DomainEvent) {
+		const eventClassName: string = event.constructor.name;
 
-    const isEventRegistered = eventClassName in this.handlersMap
+		const isEventRegistered = eventClassName in this.handlersMap;
 
-    if (isEventRegistered) {
-      const handlers = this.handlersMap[eventClassName]
+		if (isEventRegistered) {
+			const handlers = this.handlersMap[eventClassName];
 
-      for (const handler of handlers) {
-        handler(event)
-      }
-    }
-  }
+			for (const handler of handlers) {
+				handler(event);
+			}
+		}
+	}
 }

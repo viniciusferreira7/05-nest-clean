@@ -1,7 +1,13 @@
 {
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["**", "!**/dist", "!**/.next", "!**/*.node_modules"]
+		"includes": [
+			"src/**",
+			"test/**",
+			"!dist/**",
+			"!node_modules/**",
+			"!generated/**"
+		]
 	},
 	"linter": {
 		"enabled": true,
@@ -11,7 +17,7 @@
 			},
 			"recommended": false,
 			"complexity": {
-				"noForEach": "error",
+				"noForEach": "off",
 				"noStaticOnlyClass": "off",
 				"noUselessSwitchCase": "error",
 				"useFlatMap": "error"

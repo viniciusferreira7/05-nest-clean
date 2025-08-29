@@ -1,47 +1,47 @@
-import { INestApplication } from '@nestjs/common'
-import request from 'supertest'
-import { makeModuleRef } from 'test/factories/make-module-ref'
+import { INestApplication } from "@nestjs/common";
+import request from "supertest";
+import { makeModuleRef } from "test/factories/make-module-ref";
 
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
 
-describe('Create account (E2E)', () => {
-  let app: INestApplication
-  let prisma: PrismaService
+describe("Create account (E2E)", () => {
+	let app: INestApplication;
+	let prisma: PrismaService;
 
-  beforeAll(async () => {
-    const moduleRef = await makeModuleRef()
+	beforeAll(async () => {
+		const moduleRef = await makeModuleRef();
 
-    app = moduleRef.createNestApplication()
+		app = moduleRef.createNestApplication();
 
-    prisma = moduleRef.get(PrismaService)
+		prisma = moduleRef.get(PrismaService);
 
-    await app.init()
-  })
+		await app.init();
+	});
 
-  test('[POST]: /accounts', async () => {
-    const response = await request(app.getHttpServer()).post('/accounts').send({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: '123456',
-    })
+	test("[POST]: /accounts", async () => {
+		const response = await request(app.getHttpServer()).post("/accounts").send({
+			name: "John Doe",
+			email: "john.doe@example.com",
+			password: "123456",
+		});
 
-    expect(response.statusCode).toBe(201)
+		expect(response.statusCode).toBe(201);
 
-    const userOnDatabase = await prisma.user.findUnique({
-      where: {
-        email: 'john.doe@example.com',
-      },
-    })
+		const userOnDatabase = await prisma.user.findUnique({
+			where: {
+				email: "john.doe@example.com",
+			},
+		});
 
-    expect(userOnDatabase).toEqual(
-      expect.objectContaining({
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-      }),
-    )
-  })
+		expect(userOnDatabase).toEqual(
+			expect.objectContaining({
+				name: "John Doe",
+				email: "john.doe@example.com",
+			}),
+		);
+	});
 
-  afterAll(async () => {
-    await app.close()
-  })
-})
+	afterAll(async () => {
+		await app.close();
+	});
+});

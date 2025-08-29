@@ -1,54 +1,54 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable } from "@nestjs/common";
 
-import { type Either, right } from '@/core/either'
-import { UniqueEntityId } from '@/core/entities/value-object/unique-entity-id'
+import { type Either, right } from "@/core/either";
+import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 
-import { Question } from '../../enterprise/entities/question'
-import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
-import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list'
-import { QuestionsRepository } from '../repositories/questions-repository'
+import { Question } from "../../enterprise/entities/question";
+import { QuestionAttachment } from "../../enterprise/entities/question-attachment";
+import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
+import { QuestionsRepository } from "../repositories/questions-repository";
 
 interface CreateQuestionUseCaseRequest {
-  authorId: string
-  title: string
-  content: string
-  attachmentsIds: string[]
+	authorId: string;
+	title: string;
+	content: string;
+	attachmentsIds: string[];
 }
 
 type CreateQuestionUseCaseResponse = Either<
-  null,
-  {
-    question: Question
-  }
->
+	null,
+	{
+		question: Question;
+	}
+>;
 
 @Injectable()
 export class CreateQuestionUseCase {
-  constructor(private readonly questionsRepository: QuestionsRepository) {}
+	constructor(private readonly questionsRepository: QuestionsRepository) {}
 
-  async execute({
-    authorId,
-    title,
-    content,
-    attachmentsIds,
-  }: CreateQuestionUseCaseRequest): Promise<CreateQuestionUseCaseResponse> {
-    const question = Question.create({
-      authorId: new UniqueEntityId(authorId),
-      title,
-      content,
-    })
+	async execute({
+		authorId,
+		title,
+		content,
+		attachmentsIds,
+	}: CreateQuestionUseCaseRequest): Promise<CreateQuestionUseCaseResponse> {
+		const question = Question.create({
+			authorId: new UniqueEntityId(authorId),
+			title,
+			content,
+		});
 
-    const questionAttachments = attachmentsIds.map((attachmentId) => {
-      return QuestionAttachment.create({
-        attachmentId: new UniqueEntityId(attachmentId),
-        questionId: question.id,
-      })
-    })
+		const questionAttachments = attachmentsIds.map((attachmentId) => {
+			return QuestionAttachment.create({
+				attachmentId: new UniqueEntityId(attachmentId),
+				questionId: question.id,
+			});
+		});
 
-    question.attachments = new QuestionAttachmentList(questionAttachments)
+		question.attachments = new QuestionAttachmentList(questionAttachments);
 
-    await this.questionsRepository.create(question)
+		await this.questionsRepository.create(question);
 
-    return right({ question })
-  }
+		return right({ question });
+	}
 }

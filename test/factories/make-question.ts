@@ -1,42 +1,42 @@
-import { faker } from '@faker-js/faker'
-import { Injectable } from '@nestjs/common'
+import { faker } from "@faker-js/faker";
+import { Injectable } from "@nestjs/common";
 
-import { UniqueEntityId } from '@/core/entities/value-object/unique-entity-id'
+import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import {
-  Question,
-  QuestionProps,
-} from '@/domain/forum/enterprise/entities/question'
-import { PrismaQuestionMapper } from '@/infra/database/prisma/mappers/prisma-question-mapper'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+	Question,
+	QuestionProps,
+} from "@/domain/forum/enterprise/entities/question";
+import { PrismaQuestionMapper } from "@/infra/database/prisma/mappers/prisma-question-mapper";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
 
 export function makeQuestion(
-  override: Partial<QuestionProps> = {},
-  id?: UniqueEntityId,
+	override: Partial<QuestionProps> = {},
+	id?: UniqueEntityId,
 ) {
-  const question = Question.create(
-    {
-      authorId: new UniqueEntityId(),
-      title: faker.lorem.sentence(),
-      content: faker.lorem.text(),
-      ...override,
-    },
-    id,
-  )
+	const question = Question.create(
+		{
+			authorId: new UniqueEntityId(),
+			title: faker.lorem.sentence(),
+			content: faker.lorem.text(),
+			...override,
+		},
+		id,
+	);
 
-  return question
+	return question;
 }
 
 @Injectable()
 export class QuestionFactory {
-  constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) {}
 
-  async makePrismaQuestion(data?: Partial<QuestionProps>) {
-    const question = makeQuestion(data)
+	async makePrismaQuestion(data?: Partial<QuestionProps>) {
+		const question = makeQuestion(data);
 
-    await this.prisma.question.create({
-      data: PrismaQuestionMapper.toPrisma(question),
-    })
+		await this.prisma.question.create({
+			data: PrismaQuestionMapper.toPrisma(question),
+		});
 
-    return question
-  }
+		return question;
+	}
 }

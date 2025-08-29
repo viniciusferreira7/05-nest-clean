@@ -1,40 +1,42 @@
-import { faker } from '@faker-js/faker'
+import { faker } from "@faker-js/faker";
 
-import { UniqueEntityId } from '@/core/entities/value-object/unique-entity-id'
-import { type AnswerProps, Answer } from '@/domain/forum/enterprise/entities/answer'
-import { PrismaAnswerMapper } from '@/infra/database/prisma/mappers/prisma-answer-mapper'
-import  { PrismaService } from '@/infra/database/prisma/prisma.service'
-import { Injectable } from '@nestjs/common'
+import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
+import {
+	type AnswerProps,
+	Answer,
+} from "@/domain/forum/enterprise/entities/answer";
+import { PrismaAnswerMapper } from "@/infra/database/prisma/mappers/prisma-answer-mapper";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { Injectable } from "@nestjs/common";
 
 export function makeAnswer(
-  override: Partial<AnswerProps> = {},
-  id?: UniqueEntityId,
+	override: Partial<AnswerProps> = {},
+	id?: UniqueEntityId,
 ) {
-  const answer = Answer.create(
-    {
-      authorId: new UniqueEntityId(),
-      content: faker.lorem.text(),
-      questionId: new UniqueEntityId(),
-      ...override,
-    },
-    id,
-  )
+	const answer = Answer.create(
+		{
+			authorId: new UniqueEntityId(),
+			content: faker.lorem.text(),
+			questionId: new UniqueEntityId(),
+			...override,
+		},
+		id,
+	);
 
-  return answer
+	return answer;
 }
 
 @Injectable()
 export class AnswerFactory {
-  constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) {}
 
-  async makePrismaAnswer(data?: Partial<AnswerProps>) {
-    const Answer = makeAnswer(data)
+	async makePrismaAnswer(data?: Partial<AnswerProps>) {
+		const Answer = makeAnswer(data);
 
-    await this.prisma.answer.create({
-      data: PrismaAnswerMapper.toPrisma(Answer),
-    })
+		await this.prisma.answer.create({
+			data: PrismaAnswerMapper.toPrisma(Answer),
+		});
 
-    return Answer
-  }
+		return Answer;
+	}
 }
-
