@@ -35,7 +35,7 @@ export class AnswerQuestionController {
 		const result = await this.answerQuestionUseCase.execute({
 			content,
 			questionId,
-			instructorId: userId,
+			authorId: userId,
 			attachmentsIds: [],
 		});
 

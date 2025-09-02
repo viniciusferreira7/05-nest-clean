@@ -3,6 +3,7 @@ import { AnswerQuestionUseCase } from "@/domain/forum/application/use-cases/answ
 import { AuthenticateStudentUseCase } from "@/domain/forum/application/use-cases/authenticate-student";
 import { CreateQuestionUseCase } from "@/domain/forum/application/use-cases/create-question";
 import { DeleteQuestionUseCase } from "@/domain/forum/application/use-cases/delete-question";
+import { EditAnswerUseCase } from "@/domain/forum/application/use-cases/edit-answer";
 import { EditQuestionUseCase } from "@/domain/forum/application/use-cases/edit-question";
 import { FetchRecentQuestionsUseCase } from "@/domain/forum/application/use-cases/fetch-recent-questions";
 import { GetQuestionBySlugUseCase } from "@/domain/forum/application/use-cases/get-question-by-slug";
@@ -14,6 +15,7 @@ import { AuthenticateController } from "./controller/authenticate.controller";
 import { CreateAccountController } from "./controller/create-account.controller";
 import { CreateQuestionController } from "./controller/create-question.controller";
 import { DeleteQuestionController } from "./controller/delete-question.controller";
+import { EditAnswerController } from "./controller/edit-answer.controller";
 import { EditQuestionController } from "./controller/edit-question.controller";
 import { FetchRecentQuestionsController } from "./controller/fetch-recent-questions.controller";
 import { GetQuestionBySlugController } from "./controller/get-question-by-slug.controller";
@@ -29,6 +31,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		GetQuestionBySlugController,
 		DeleteQuestionController,
 		AnswerQuestionController,
+		EditAnswerController,
 	],
 	providers: [
 		CreateQuestionUseCase,
@@ -39,6 +42,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		GetQuestionBySlugUseCase,
 		DeleteQuestionUseCase,
 		AnswerQuestionUseCase,
+		EditAnswerUseCase,
 	],
 })
 export class HttpModule {}
