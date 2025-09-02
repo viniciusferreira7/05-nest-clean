@@ -5,12 +5,12 @@ import { expect } from "vitest";
 
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 
-import { FetchQuestionAnswerUseCase } from "./fetch-question-answer";
+import { FetchQuestionAnswersUseCase } from "./fetch-question-answers";
 
 let inMemoryAnswerRepository: InMemoryAnswersRepository;
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
 
-let sut: FetchQuestionAnswerUseCase;
+let sut: FetchQuestionAnswersUseCase;
 
 describe("Fetch question answers", () => {
 	beforeEach(async () => {
@@ -19,7 +19,7 @@ describe("Fetch question answers", () => {
 		inMemoryAnswerRepository = new InMemoryAnswersRepository(
 			inMemoryAnswerAttachmentsRepository,
 		);
-		sut = new FetchQuestionAnswerUseCase(inMemoryAnswerRepository);
+		sut = new FetchQuestionAnswersUseCase(inMemoryAnswerRepository);
 	});
 
 	it("should be able to fetch question answers", async () => {

@@ -38,7 +38,5 @@ export async function makeModuleRef(): Promise<TestingModule> {
 		})
 		.compile();
 
-	console.log({ moduleRef });
-
 	return moduleRef;
 }
