@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { AnswerQuestionUseCase } from "@/domain/forum/application/use-cases/answer-question";
 import { AuthenticateStudentUseCase } from "@/domain/forum/application/use-cases/authenticate-student";
 import { CreateQuestionUseCase } from "@/domain/forum/application/use-cases/create-question";
+import { DeleteAnswerUseCase } from "@/domain/forum/application/use-cases/delete-answer";
 import { DeleteQuestionUseCase } from "@/domain/forum/application/use-cases/delete-question";
 import { EditAnswerUseCase } from "@/domain/forum/application/use-cases/edit-answer";
 import { EditQuestionUseCase } from "@/domain/forum/application/use-cases/edit-question";
@@ -14,6 +15,7 @@ import { AnswerQuestionController } from "./controller/answer-question.controlle
 import { AuthenticateController } from "./controller/authenticate.controller";
 import { CreateAccountController } from "./controller/create-account.controller";
 import { CreateQuestionController } from "./controller/create-question.controller";
+import { DeleteAnswerController } from "./controller/delete-answer.controller";
 import { DeleteQuestionController } from "./controller/delete-question.controller";
 import { EditAnswerController } from "./controller/edit-answer.controller";
 import { EditQuestionController } from "./controller/edit-question.controller";
@@ -32,6 +34,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		DeleteQuestionController,
 		AnswerQuestionController,
 		EditAnswerController,
+		DeleteAnswerController,
 	],
 	providers: [
 		CreateQuestionUseCase,
@@ -43,6 +46,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		DeleteQuestionUseCase,
 		AnswerQuestionUseCase,
 		EditAnswerUseCase,
+		DeleteAnswerUseCase,
 	],
 })
 export class HttpModule {}

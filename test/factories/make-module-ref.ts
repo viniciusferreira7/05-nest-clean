@@ -6,12 +6,11 @@ import { PrismaClient } from "generated/prisma";
 import { AppModule } from "@/infra/app.module";
 import { DatabaseModule } from "@/infra/database/database.module";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
-
-import { QuestionFactory } from "./make-question";
-import { StudentFactory } from "./make-student";
 import { AnswerFactory } from "./make-answer";
-import { QuestionCommentFactory } from "./make-question-comment";
 import { AnswerCommentFactory } from "./make-answer-comment";
+import { QuestionFactory } from "./make-question";
+import { QuestionCommentFactory } from "./make-question-comment";
+import { StudentFactory } from "./make-student";
 
 export async function makeModuleRef(): Promise<TestingModule> {
 	const databaseUrl = process.env.DATABASE_URL;
@@ -38,6 +37,8 @@ export async function makeModuleRef(): Promise<TestingModule> {
 			},
 		})
 		.compile();
+
+	console.log({ moduleRef });
 
 	return moduleRef;
 }
