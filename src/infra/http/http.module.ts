@@ -24,6 +24,7 @@ import { CommentOnQuestionController } from "./controller/comment-on-question.co
 import { CreateAccountController } from "./controller/create-account.controller";
 import { CreateQuestionController } from "./controller/create-question.controller";
 import { DeleteAnswerController } from "./controller/delete-answer.controller";
+import { DeleteAnswerCommentController } from "./controller/delete-answer-comment.controller";
 import { DeleteQuestionController } from "./controller/delete-question.controller";
 import { DeleteQuestionCommentController } from "./controller/delete-question-comment.controller";
 import { EditAnswerController } from "./controller/edit-answer.controller";
@@ -31,6 +32,7 @@ import { EditQuestionController } from "./controller/edit-question.controller";
 import { FetchQuestionAnswersController } from "./controller/fetch-question-answers.controller.";
 import { FetchRecentQuestionsController } from "./controller/fetch-recent-questions.controller";
 import { GetQuestionBySlugController } from "./controller/get-question-by-slug.controller";
+import { DeleteAnswerCommentUseCase } from "@/domain/forum/application/use-cases/delete-answer-comment";
 
 @Module({
 	imports: [DatabaseModule, cryptographyModule],
@@ -50,6 +52,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		CommentOnQuestionController,
 		DeleteQuestionCommentController,
 		CommentOnAnswerController,
+		DeleteAnswerCommentController,
 	],
 	providers: [
 		CreateQuestionUseCase,
@@ -67,6 +70,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		CommentOnQuestionUseCase,
 		DeleteQuestionCommentUseCase,
 		CommentOnAnswerUseCase,
+		DeleteAnswerCommentUseCase,
 	],
 })
 export class HttpModule {}

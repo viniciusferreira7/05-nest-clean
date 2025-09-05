@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-
+import { Injectable } from "@nestjs/common";
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import {
 	AnswerComment,
@@ -7,7 +7,6 @@ import {
 } from "@/domain/forum/enterprise/entities/answer-comment";
 import { PrismaAnswerCommentMapper } from "@/infra/database/prisma/mappers/prisma-answer-comment-mapper";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
-import { Injectable } from "@nestjs/common";
 
 export function makeAnswerComment(
 	override: Partial<AnswerCommentProps> = {},
