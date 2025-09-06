@@ -80,4 +80,5 @@ jobs:
           access-role-arn: ${{ secrets.APP_RUNNER_ROLE_ID }}
           region: us-east-2
           cpu: 1
+          memory: 2
           port: 3333
