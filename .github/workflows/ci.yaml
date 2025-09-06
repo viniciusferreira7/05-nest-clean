@@ -60,6 +60,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build docker image
+        id: build-docker-image
         if: false
         env: 
           REGISTRY: ${{ steps.login_ecr.outputs.registry }}
@@ -67,3 +68,16 @@ jobs:
         run: |
           docker build -t $REGISTRY/nest-clean-api:$TAG .
           docker push $REGISTRY/nest-clean-api:$TAG
+          IMAGE=$(echo $REGISTRY/nest-clean-api:$TAG | head -c7)
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+
+      - name: Deploy to App Runner
+        if: false
+        uses: awslabs/amazon-app-runner-deploy@main
+        with:
+          service: nest-clean-api
+          image: ${{ steps.build-docker-image.outputs.image }}
+          access-role-arn: ${{ secrets.APP_RUNNER_ROLE_ID }}
+          region: us-east-2
+          cpu: 1
+          port: 3333
