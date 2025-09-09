@@ -100,9 +100,9 @@ jobs:
       postgres:
         image: bitnami/postgresql:17.2.0
         env:
-          POSTGRESQL_USERNAME: postgres
-          POSTGRESQL_PASSWORD: postgres
-          POSTGRESQL_DATABASE: nest_clean_test
+          POSTGRESQL_USERNAME:  ${{ secrets.DATABASE_USERNAME }}
+          POSTGRESQL_PASSWORD:  ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRESQL_DATABASE:  ${{ secrets.DATABASE_NAME }}
         options: >-
           --health-cmd="pg_isready -U postgres -d nest_clean_test"
           --health-interval=10s
@@ -113,12 +113,12 @@ jobs:
 
     env:
       NODE_ENV: "test"
-      DATABASE_USERNAME: "postgres"
-      DATABASE_PASSWORD: "postgres"
-      DATABASE_NAME: "nest_clean_test"
-      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/nest_clean_test"
-      JWT_PRIVATE_KEY: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBdGVzdC1rZXk="
-      JWT_PUBLIC_KEY: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF0ZXN0LWtleQ=="
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
 
     steps:
       - name: Checkout code
