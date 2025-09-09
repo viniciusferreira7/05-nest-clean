@@ -112,9 +112,13 @@ jobs:
           - 5432:5432
 
     env:
+      NODE_ENV: "test"
+      DATABASE_USERNAME: "postgres"
+      DATABASE_PASSWORD: "postgres"
+      DATABASE_NAME: "nest_clean_test"
       DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/nest_clean_test"
-      JWT_PRIVATE_KEY: "test-private-key"
-      JWT_PUBLIC_KEY: "test-public-key"
+      JWT_PRIVATE_KEY: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBdGVzdC1rZXk="
+      JWT_PUBLIC_KEY: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF0ZXN0LWtleQ=="
 
     steps:
       - name: Checkout code

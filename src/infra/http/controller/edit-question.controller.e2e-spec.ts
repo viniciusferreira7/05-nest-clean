@@ -2,10 +2,9 @@ import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import request from "supertest";
 import { makeModuleRef } from "test/factories/make-module-ref";
-import { StudentFactory } from "test/factories/make-student";
-
-import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { QuestionFactory } from "test/factories/make-question";
+import { StudentFactory } from "test/factories/make-student";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
 
 describe("Edit question (E2E)", () => {
 	let app: INestApplication;

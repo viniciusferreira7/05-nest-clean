@@ -1,4 +1,4 @@
-import type { Comment as PrismaComment, Prisma } from "generated/prisma";
+import type { Prisma, Comment as PrismaComment } from "generated/prisma";
 
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";

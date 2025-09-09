@@ -6,6 +6,7 @@ import { CommentOnAnswerUseCase } from "@/domain/forum/application/use-cases/com
 import { CommentOnQuestionUseCase } from "@/domain/forum/application/use-cases/comment-on-question";
 import { CreateQuestionUseCase } from "@/domain/forum/application/use-cases/create-question";
 import { DeleteAnswerUseCase } from "@/domain/forum/application/use-cases/delete-answer";
+import { DeleteAnswerCommentUseCase } from "@/domain/forum/application/use-cases/delete-answer-comment";
 import { DeleteQuestionUseCase } from "@/domain/forum/application/use-cases/delete-question";
 import { DeleteQuestionCommentUseCase } from "@/domain/forum/application/use-cases/delete-question-comment";
 import { EditAnswerUseCase } from "@/domain/forum/application/use-cases/edit-answer";
@@ -32,7 +33,6 @@ import { EditQuestionController } from "./controller/edit-question.controller";
 import { FetchQuestionAnswersController } from "./controller/fetch-question-answers.controller.";
 import { FetchRecentQuestionsController } from "./controller/fetch-recent-questions.controller";
 import { GetQuestionBySlugController } from "./controller/get-question-by-slug.controller";
-import { DeleteAnswerCommentUseCase } from "@/domain/forum/application/use-cases/delete-answer-comment";
 
 @Module({
 	imports: [DatabaseModule, cryptographyModule],

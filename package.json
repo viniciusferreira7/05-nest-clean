@@ -17,7 +17,7 @@
 		"start:containers": "docker compose -f docker-compose.yaml --env-file .env up --build -d",
 		"format": "pnpm exec biome format --write",
 		"lint": "pnpm exec biome lint --write",
-		"check": "biome check",
+		"check": "pnpm exec biome check --write",
 		"test": "pnpm prisma generate && vitest run",
 		"test:watch": "vitest",
 		"test:cov": "vitest run --coverage",

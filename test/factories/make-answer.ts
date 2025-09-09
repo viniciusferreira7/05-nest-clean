@@ -1,13 +1,12 @@
 import { faker } from "@faker-js/faker";
-
+import { Injectable } from "@nestjs/common";
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import {
-	type AnswerProps,
 	Answer,
+	type AnswerProps,
 } from "@/domain/forum/enterprise/entities/answer";
 import { PrismaAnswerMapper } from "@/infra/database/prisma/mappers/prisma-answer-mapper";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
-import { Injectable } from "@nestjs/common";
 
 export function makeAnswer(
 	override: Partial<AnswerProps> = {},

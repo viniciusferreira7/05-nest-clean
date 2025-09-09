@@ -1,4 +1,4 @@
-import type { Answer as PrismaAnswer, Prisma } from "generated/prisma";
+import type { Prisma, Answer as PrismaAnswer } from "generated/prisma";
 
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import { Answer } from "@/domain/forum/enterprise/entities/answer";
