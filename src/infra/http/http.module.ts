@@ -12,6 +12,7 @@ import { DeleteQuestionCommentUseCase } from "@/domain/forum/application/use-cas
 import { EditAnswerUseCase } from "@/domain/forum/application/use-cases/edit-answer";
 import { EditQuestionUseCase } from "@/domain/forum/application/use-cases/edit-question";
 import { FetchQuestionAnswersUseCase } from "@/domain/forum/application/use-cases/fetch-question-answers";
+import { FetchQuestionCommentsUseCase } from "@/domain/forum/application/use-cases/fetch-question-comments";
 import { FetchRecentQuestionsUseCase } from "@/domain/forum/application/use-cases/fetch-recent-questions";
 import { GetQuestionBySlugUseCase } from "@/domain/forum/application/use-cases/get-question-by-slug";
 import { RegisterStudentUseCase } from "@/domain/forum/application/use-cases/register-student";
@@ -30,9 +31,10 @@ import { DeleteQuestionController } from "./controller/delete-question.controlle
 import { DeleteQuestionCommentController } from "./controller/delete-question-comment.controller";
 import { EditAnswerController } from "./controller/edit-answer.controller";
 import { EditQuestionController } from "./controller/edit-question.controller";
-import { FetchQuestionAnswersController } from "./controller/fetch-question-answers.controller.";
+import { FetchQuestionCommentsController } from "./controller/fetch-question-comments.controller";
 import { FetchRecentQuestionsController } from "./controller/fetch-recent-questions.controller";
 import { GetQuestionBySlugController } from "./controller/get-question-by-slug.controller";
+import { FetchQuestionAnswersController } from "./controller/fetch-question-answers.controller";
 
 @Module({
 	imports: [DatabaseModule, cryptographyModule],
@@ -53,6 +55,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		DeleteQuestionCommentController,
 		CommentOnAnswerController,
 		DeleteAnswerCommentController,
+		FetchQuestionCommentsController,
 	],
 	providers: [
 		CreateQuestionUseCase,
@@ -71,6 +74,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 		DeleteQuestionCommentUseCase,
 		CommentOnAnswerUseCase,
 		DeleteAnswerCommentUseCase,
+		FetchQuestionCommentsUseCase,
 	],
 })
 export class HttpModule {}
