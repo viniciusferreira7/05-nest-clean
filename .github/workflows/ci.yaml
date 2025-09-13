@@ -148,11 +148,42 @@ jobs:
       - name: Run E2E tests
         run: pnpm run test:e2e
 
+  release: 
+    name: Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [quality, test-unit, test-e2e]
+    if: github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: write
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+
   build:
     name: Build Application
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [quality, test-unit, test-e2e]
+    needs: [quality, test-unit, test-e2e, release]
     if: github.ref == 'refs/heads/main'
 
     permissions:
@@ -185,13 +216,6 @@ jobs:
 
       - name: Build application
         run: pnpm run build
-
-      - name: Checkout
-        uses: actions/checkout@v5
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Generate image tag
         id: generate_tag
