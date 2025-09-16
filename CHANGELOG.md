@@ -1,13 +1,13 @@
 # 1.0.0 (2025-09-13)
 
 
-### Bug Fixes
+## Bug Fixes
 
 * add missing imports to http module ([ff6d234](https://github.com/viniciusferreira7/05-nest-clean/commit/ff6d2342b35609c872ea348fb6ebb03e219c2dbd))
 * correct database url when is used into e2e test ([5400ee6](https://github.com/viniciusferreira7/05-nest-clean/commit/5400ee6f320fb09e8df5e07450784328941993d8))
 
 
-### Features
+## Features
 
 * add abstract class to upload attachment ([ae8c32a](https://github.com/viniciusferreira7/05-nest-clean/commit/ae8c32ae0673168dbb54aa600f8bf68503783b9d))
 * add authentication with private and public jwt ([25c6a4f](https://github.com/viniciusferreira7/05-nest-clean/commit/25c6a4f963153c3046fac00208a1f8e767cc10e1))
