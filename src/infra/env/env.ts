@@ -21,6 +21,10 @@ export const envSchema = z.object({
 	JWT_PUBLIC_KEY: z.string().refine(isBase64, {
 		message: "JWT_PUBLIC_KEY must be a valid base64 string",
 	}),
+	CLOUDFLARE_ACCOUNT_ID: z.string(),
+	AWS_BUCKET_NAME: z.string(),
+	AWS_ACCESS_KEY_ID: z.string(),
+	AWS_SECRETE_ACCESS_KEY_ID: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;
