@@ -19,6 +19,7 @@ import { GetQuestionBySlugUseCase } from "@/domain/forum/application/use-cases/g
 import { RegisterStudentUseCase } from "@/domain/forum/application/use-cases/register-student";
 import { cryptographyModule } from "../cryptography/cryptography.module";
 import { DatabaseModule } from "../database/database.module";
+import { StorageModule } from "../storage/storage.module";
 import { AnswerQuestionController } from "./controller/answer-question.controller";
 import { AuthenticateController } from "./controller/authenticate.controller";
 import { ChooseQuestionBestAnswerController } from "./controller/choose-question-best-answer.controller";
@@ -40,7 +41,7 @@ import { GetQuestionBySlugController } from "./controller/get-question-by-slug.c
 import { UploadAttachmentController } from "./controller/upload-attachment.controlle";
 
 @Module({
-	imports: [DatabaseModule, cryptographyModule],
+	imports: [DatabaseModule, cryptographyModule, StorageModule],
 	controllers: [
 		CreateAccountController,
 		AuthenticateController,
