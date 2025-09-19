@@ -119,6 +119,11 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
       JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_ACCOUNT_TOKEN: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
+      AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRETE_ACCESS_KEY_ID: ${{ secrets.AWS_SECRETE_ACCESS_KEY_ID }}
 
     steps:
       - name: Checkout code
