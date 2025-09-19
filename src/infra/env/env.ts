@@ -22,6 +22,7 @@ export const envSchema = z.object({
 		message: "JWT_PUBLIC_KEY must be a valid base64 string",
 	}),
 	CLOUDFLARE_ACCOUNT_ID: z.string(),
+	CLOUDFLARE_ACCOUNT_TOKEN: z.string(),
 	AWS_BUCKET_NAME: z.string(),
 	AWS_ACCESS_KEY_ID: z.string(),
 	AWS_SECRETE_ACCESS_KEY_ID: z.string(),
