@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.0.0...v1.1.0) (2025-09-24)
+
+
+### Features
+
+* add r2 storage class ([71082ce](https://github.com/viniciusferreira7/05-nest-clean/commit/71082ce2a0177d7c5c8ede308dd893d430f0afe5))
+* create storage module ([418a3c5](https://github.com/viniciusferreira7/05-nest-clean/commit/418a3c598478f844314edc240f4b7fcc693b99d4))
+* implements upload to r2 storage ([5530b27](https://github.com/viniciusferreira7/05-nest-clean/commit/5530b272024970674660d65e926bfd52be6ec66c))
+
 # 1.0.0 (2025-09-13)
 
 
