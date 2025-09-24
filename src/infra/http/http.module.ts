@@ -33,12 +33,12 @@ import { DeleteQuestionController } from "./controller/delete-question.controlle
 import { DeleteQuestionCommentController } from "./controller/delete-question-comment.controller";
 import { EditAnswerController } from "./controller/edit-answer.controller";
 import { EditQuestionController } from "./controller/edit-question.controller";
-import { FetchAnswerCommentsController } from "./controller/fetch-answer-comments.controlle";
+import { FetchAnswerCommentsController } from "./controller/fetch-answer-comments.controller";
 import { FetchQuestionAnswersController } from "./controller/fetch-question-answers.controller";
 import { FetchQuestionCommentsController } from "./controller/fetch-question-comments.controller";
 import { FetchRecentQuestionsController } from "./controller/fetch-recent-questions.controller";
 import { GetQuestionBySlugController } from "./controller/get-question-by-slug.controller";
-import { UploadAttachmentController } from "./controller/upload-attachment.controlle";
+import { UploadAttachmentController } from "./controller/upload-attachment.controller";
 
 @Module({
 	imports: [DatabaseModule, cryptographyModule, StorageModule],
