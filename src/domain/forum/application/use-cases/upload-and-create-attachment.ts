@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { type Either, left, right } from "@/core/either";
 import { Attachment } from "../../enterprise/entities/attachments";
 import { AttachmentsRepository } from "../repositories/attachments-repository";
-import type { Uploader } from "../storage/uploader";
+import { Uploader } from "../storage/uploader";
 import { InvalidAttachmentTypeError } from "./erros/invalid-attachment-type-error";
 
 interface UploadAndCreateAttachmentUseCaseRequest {
