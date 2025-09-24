@@ -9,7 +9,10 @@ import { HttpModule } from "./http/http.module";
 @Module({
 	imports: [
 		ConfigModule.forRoot({
-			validate: (env) => envSchema.parse(env),
+			envFilePath: [".env.test", ".env"],
+			validate: (env) => {
+				return envSchema.parse(env);
+			},
 			isGlobal: true,
 		}),
 		AuthModule,

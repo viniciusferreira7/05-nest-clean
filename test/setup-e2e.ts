@@ -1,4 +1,8 @@
-import "dotenv/config";
+import * as dotenv from "dotenv";
+
+dotenv.config({ path: ".env" });
+
+dotenv.config({ path: ".env.test", override: true });
 
 import { execSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
