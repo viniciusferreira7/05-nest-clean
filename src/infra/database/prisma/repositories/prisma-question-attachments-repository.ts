@@ -12,6 +12,27 @@ export class PrismaQuestionAttachmentsRepository
 {
 	constructor(private readonly prisma: PrismaService) {}
 
+	async createMany(attachments: QuestionAttachment[]): Promise<void> {
+		if (attachments.length === 0) {
+			return;
+		}
+
+		const attachmentIds = attachments.map((item) => item.id.toString());
+
+		const questionId = attachments[0].questionId.toString();
+
+		await this.prisma.attachment.updateMany({
+			where: {
+				id: {
+					in: attachmentIds,
+				},
+			},
+			data: {
+				questionId,
+			},
+		});
+	}
+
 	async findManyByQuestionId(
 		questionId: string,
 	): Promise<QuestionAttachment[]> {
@@ -22,6 +43,24 @@ export class PrismaQuestionAttachmentsRepository
 		});
 
 		return attachments.map(PrismaQuestionAttachmentMapper.toDomain);
+	}
+
+	async deleteMany(attachments: QuestionAttachment[]): Promise<void> {
+		if (attachments.length === 0) {
+			return;
+		}
+		const attachmentIds = attachments.map((item) => item.id.toString());
+
+		const questionId = attachments[0].questionId.toString();
+
+		await this.prisma.attachment.deleteMany({
+			where: {
+				id: {
+					in: attachmentIds,
+				},
+				questionId: questionId,
+			},
+		});
 	}
 
 	async deleteManyByQuestionId(questionId: string): Promise<void> {
