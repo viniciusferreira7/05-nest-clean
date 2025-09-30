@@ -90,6 +90,58 @@ describe("Edit question", () => {
 		]);
 	});
 
+	it("should sync new and removed attachments when editing a question", async () => {
+		const authorId = new UniqueEntityId();
+		const questionId = "question-1";
+
+		const newQuestion = makeQuestion(
+			{
+				authorId,
+			},
+			new UniqueEntityId(questionId),
+		);
+
+		inMemoryQuestionAttachmentsRepository.items.push(
+			makeQuestionAttachment({
+				attachmentId: new UniqueEntityId("1"),
+				questionId: newQuestion.id,
+			}),
+			makeQuestionAttachment({
+				attachmentId: new UniqueEntityId("2"),
+				questionId: newQuestion.id,
+			}),
+		);
+
+		await inMemoryQuestionRepository.create(newQuestion);
+
+		const result = await sut.execute({
+			authorId: authorId.toString(),
+			questionId,
+			title: "Edited title",
+			content: "Edited content",
+			attachmentsIds: ["1", "3"],
+		});
+
+		expect(result.isRight()).toBeTruthy();
+
+		expect(inMemoryQuestionAttachmentsRepository.items).toHaveLength(2);
+
+		if (result.isRight()) {
+			expect(inMemoryQuestionAttachmentsRepository.items).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({
+						attachmentId: new UniqueEntityId("1"),
+						questionId: result.value?.question.id,
+					}),
+					expect.objectContaining({
+						attachmentId: new UniqueEntityId("3"),
+						questionId: result.value?.question.id,
+					}),
+				]),
+			);
+		}
+	});
+
 	it("should not be able to edit question with wrong id", async () => {
 		const result = await sut.execute({
 			authorId: new UniqueEntityId().toString(),

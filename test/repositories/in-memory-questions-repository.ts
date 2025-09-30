@@ -56,8 +56,8 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
 		const removedAttachments = question.attachments.getRemovedItems();
 
 		if (!!removedAttachments.length)
-			await this.questionAttachmentsRepository.createMany(
-				question.attachments.getNewItems(),
+			await this.questionAttachmentsRepository.deleteMany(
+				question.attachments.getRemovedItems(),
 			);
 
 		if (itemIndex >= 0) {
