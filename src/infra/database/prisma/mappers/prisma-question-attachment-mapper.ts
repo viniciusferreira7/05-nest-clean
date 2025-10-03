@@ -20,7 +20,34 @@ export class PrismaQuestionAttachmentMapper {
 
 	static toPrismaUpdateMany(
 		attachments: QuestionAttachment[],
-	): Prisma.AttachmentUpdateArgs {}
-}
+	): Prisma.AttachmentUpdateManyArgs {
+		const attachmentIds = attachments.map((item) => item.id.toString());
 
-//FIXME: Bitnami removed postgresql image, maybe you must change to postgresql official image
+		const questionId = attachments[0].questionId.toString();
+
+		return {
+			where: {
+				id: {
+					in: attachmentIds,
+				},
+			},
+			data: {
+				questionId,
+			},
+		};
+	}
+
+	static toPrismaDeleteMany(
+		attachments: QuestionAttachment[],
+	): Prisma.AttachmentDeleteManyArgs {
+		const attachmentIds = attachments.map((item) => item.id.toString());
+
+		return {
+			where: {
+				id: {
+					in: attachmentIds,
+				},
+			},
+		};
+	}
+}

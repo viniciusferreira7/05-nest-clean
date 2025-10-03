@@ -17,20 +17,9 @@ export class PrismaQuestionAttachmentsRepository
 			return;
 		}
 
-		const attachmentIds = attachments.map((item) => item.id.toString());
+		const data = PrismaQuestionAttachmentMapper.toPrismaUpdateMany(attachments);
 
-		const questionId = attachments[0].questionId.toString();
-
-		await this.prisma.attachment.updateMany({
-			where: {
-				id: {
-					in: attachmentIds,
-				},
-			},
-			data: {
-				questionId,
-			},
-		});
+		await this.prisma.attachment.updateMany(data);
 	}
 
 	async findManyByQuestionId(
@@ -49,18 +38,10 @@ export class PrismaQuestionAttachmentsRepository
 		if (attachments.length === 0) {
 			return;
 		}
-		const attachmentIds = attachments.map((item) => item.id.toString());
 
-		const questionId = attachments[0].questionId.toString();
+		const data = PrismaQuestionAttachmentMapper.toPrismaUpdateMany(attachments);
 
-		await this.prisma.attachment.deleteMany({
-			where: {
-				id: {
-					in: attachmentIds,
-				},
-				questionId: questionId,
-			},
-		});
+		await this.prisma.attachment.updateMany(data);
 	}
 
 	async deleteManyByQuestionId(questionId: string): Promise<void> {
