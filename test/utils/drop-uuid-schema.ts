@@ -15,7 +15,6 @@ export async function dropUUIDSchemas(prisma: PrismaClient) {
 	const IGNORED_SCHEMAS = ["pg_catalog", "information_schema", "public"];
 
 	const uuidSchemas = result
-		// eslint-disable-next-line camelcase
 		.map(({ schema_name }) => schema_name)
 		.filter((name) => isUUID(name) && !IGNORED_SCHEMAS.includes(name));
 

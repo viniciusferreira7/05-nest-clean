@@ -90,5 +90,3 @@ model Attachment {
 
   @@map("attachments")
 }
-
-//TODO: Run migrations

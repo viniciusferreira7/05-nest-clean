@@ -21,7 +21,9 @@ export class PrismaQuestionAttachmentMapper {
 	static toPrismaUpdateMany(
 		attachments: QuestionAttachment[],
 	): Prisma.AttachmentUpdateManyArgs {
-		const attachmentIds = attachments.map((item) => item.id.toString());
+		const attachmentIds = attachments.map((item) =>
+			item.attachmentId.toString(),
+		);
 
 		const questionId = attachments[0].questionId.toString();
 
@@ -40,7 +42,9 @@ export class PrismaQuestionAttachmentMapper {
 	static toPrismaDeleteMany(
 		attachments: QuestionAttachment[],
 	): Prisma.AttachmentDeleteManyArgs {
-		const attachmentIds = attachments.map((item) => item.id.toString());
+		const attachmentIds = attachments.map((item) =>
+			item.attachmentId.toString(),
+		);
 
 		return {
 			where: {
