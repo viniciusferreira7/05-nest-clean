@@ -98,11 +98,11 @@ jobs:
 
     services:
       postgres:
-        image: bitnami/postgresql:17.2.0
+        image: postgres:17.2
         env:
-          POSTGRESQL_USERNAME:  ${{ secrets.DATABASE_USERNAME }}
-          POSTGRESQL_PASSWORD:  ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRESQL_DATABASE:  ${{ secrets.DATABASE_NAME }}
+          POSTGRES_USER:  ${{ secrets.DATABASE_USERNAME }}
+          POSTGRES_PASSWORD:  ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRES_DB:  ${{ secrets.DATABASE_NAME }}
         options: >-
           --health-cmd="pg_isready -U postgres -d nest_clean_test"
           --health-interval=10s
