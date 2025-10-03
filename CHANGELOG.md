@@ -1,3 +1,17 @@
+# [1.2.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.1.0...v1.2.0) (2025-10-03)
+
+
+### Bug Fixes
+
+* correct unit test to remove and add question attachment ([6641983](https://github.com/viniciusferreira7/05-nest-clean/commit/66419837156bbf942f9a861ef7a779521eb5c3ff))
+
+
+### Features
+
+* add feature to create question with attachments ([bf9b496](https://github.com/viniciusferreira7/05-nest-clean/commit/bf9b4964e8e0b0ef3b99e934be3c55feea689cea))
+* implement missed methods on prisma question attachments repository ([847c983](https://github.com/viniciusferreira7/05-nest-clean/commit/847c983a71c3d2d74f871e2e5da810bd9c6ccd2c))
+* implements update and delete many on prisma question attachments mapper ([28b40d8](https://github.com/viniciusferreira7/05-nest-clean/commit/28b40d8563c06bf9302742138e088ade6300e08a))
+
 # [1.1.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.0.0...v1.1.0) (2025-09-24)
 
 
