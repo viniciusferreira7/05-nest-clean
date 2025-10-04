@@ -20,7 +20,7 @@ jobs:
     name: Code Quality
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     permissions:
       contents: read
 
@@ -59,7 +59,7 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     permissions:
       contents: read
 
@@ -100,9 +100,9 @@ jobs:
       postgres:
         image: postgres:17.2
         env:
-          POSTGRES_USER:  ${{ secrets.DATABASE_USERNAME }}
-          POSTGRES_PASSWORD:  ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRES_DB:  ${{ secrets.DATABASE_NAME }}
+          POSTGRES_USER: ${{ secrets.DATABASE_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
         options: >-
           --health-cmd="pg_isready -U postgres -d nest_clean_test"
           --health-interval=10s
@@ -153,7 +153,7 @@ jobs:
       - name: Run E2E tests
         run: pnpm run test:e2e
 
-  release: 
+  release:
     name: Release
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -165,7 +165,7 @@ jobs:
       issues: write
       pull-requests: write
 
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -183,7 +183,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
 
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -191,7 +190,6 @@ jobs:
         uses: cycjimmy/semantic-release-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-
 
   build:
     name: Build Application
@@ -242,7 +240,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ID }}
-          aws-region: us-east-2
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to AWS ECR
         id: login_ecr
@@ -252,7 +250,7 @@ jobs:
       - name: Build and push Docker image
         id: build_docker_image
         if: false
-        env: 
+        env:
           REGISTRY: ${{ steps.login_ecr.outputs.registry }}
           TAG: ${{ steps.generate_tag.outputs.sha }}
         run: |
@@ -262,14 +260,14 @@ jobs:
           echo "image=$IMAGE_URI" >> $GITHUB_OUTPUT
 
       - name: Deploy to App Runner
-        id: deploy-app-runner 
+        id: deploy-app-runner
         if: false
         uses: awslabs/amazon-app-runner-deploy@main
         with:
-          service: nest-clean-api
+          service: ${{ vars.DOCKERHUB_USERNAME }}
           image: ${{ steps.build_docker_image.outputs.image }}
           access-role-arn: ${{ secrets.APP_RUNNER_ROLE_ID }}
-          region: us-east-2
+          region: ${{ secrets.AWS_REGION }}
           cpu: 1
           memory: 2
           port: 3333
