@@ -254,9 +254,9 @@ jobs:
           REGISTRY: ${{ steps.login_ecr.outputs.registry }}
           TAG: ${{ steps.generate_tag.outputs.sha }}
         run: |
-          docker build -t $REGISTRY/nest-clean-api:$TAG -t $REGISTRY/nest-clean-api:latest .
-          docker push $REGISTRY/nest-clean-api --all-tags
-          IMAGE_URI=$REGISTRY/nest-clean-api:$TAG
+          docker build -t $REGISTRY/${{ vars.SERVICE_NAME }}:$TAG -t $REGISTRY/${{ vars.SERVICE_NAME }}:latest .
+          docker push $REGISTRY/${{ vars.SERVICE_NAME }} --all-tags
+          IMAGE_URI=$REGISTRY/${{ vars.SERVICE_NAME }}:$TAG
           echo "image=$IMAGE_URI" >> $GITHUB_OUTPUT
 
       - name: Deploy to App Runner
@@ -264,7 +264,7 @@ jobs:
         if: false
         uses: awslabs/amazon-app-runner-deploy@main
         with:
-          service: ${{ vars.DOCKERHUB_USERNAME }}
+          service: ${{ vars.SERVICE_NAME }}
           image: ${{ steps.build_docker_image.outputs.image }}
           access-role-arn: ${{ secrets.APP_RUNNER_ROLE_ID }}
           region: ${{ secrets.AWS_REGION }}
