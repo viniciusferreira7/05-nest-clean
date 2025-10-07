@@ -10,6 +10,7 @@ import { AnswerFactory } from "./make-answer";
 import { AnswerCommentFactory } from "./make-answer-comment";
 import { AttachmentFactory } from "./make-attachment";
 import { QuestionFactory } from "./make-question";
+import { QuestionAttachmentFactory } from "./make-question-attachment";
 import { QuestionCommentFactory } from "./make-question-comment";
 import { StudentFactory } from "./make-student";
 
@@ -24,6 +25,7 @@ export async function makeModuleRef(): Promise<TestingModule> {
 			QuestionCommentFactory,
 			AnswerCommentFactory,
 			AttachmentFactory,
+			QuestionAttachmentFactory,
 		],
 	})
 		.overrideProvider(PrismaService)
