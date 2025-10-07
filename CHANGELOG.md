@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.2.0...v1.3.0) (2025-10-07)
+
+
+### Features
+
+* add attachments on creating or editing answer ([7e91072](https://github.com/viniciusferreira7/05-nest-clean/commit/7e910722afd998eba879828be8402cb8a286ac64))
+* add attachments on editing question ([03d6c43](https://github.com/viniciusferreira7/05-nest-clean/commit/03d6c437be5bbbea80ab358a1028abe4d3103541))
+
 # [1.2.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.1.0...v1.2.0) (2025-10-03)
 
 
