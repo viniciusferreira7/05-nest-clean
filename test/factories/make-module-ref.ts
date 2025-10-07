@@ -7,6 +7,7 @@ import { AppModule } from "@/infra/app.module";
 import { DatabaseModule } from "@/infra/database/database.module";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { AnswerFactory } from "./make-answer";
+import { AnswerAttachmentFactory } from "./make-answer-attachment";
 import { AnswerCommentFactory } from "./make-answer-comment";
 import { AttachmentFactory } from "./make-attachment";
 import { QuestionFactory } from "./make-question";
@@ -26,6 +27,7 @@ export async function makeModuleRef(): Promise<TestingModule> {
 			AnswerCommentFactory,
 			AttachmentFactory,
 			QuestionAttachmentFactory,
+			AnswerAttachmentFactory,
 		],
 	})
 		.overrideProvider(PrismaService)

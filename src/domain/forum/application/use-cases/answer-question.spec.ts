@@ -39,4 +39,29 @@ describe("Create answer", () => {
 			expect.objectContaining({ attachmentId: new UniqueEntityId("2") }),
 		]);
 	});
+
+	it("should persist attachments when answer a question", async () => {
+		const result = await sut.execute({
+			authorId: "1",
+			questionId: "1",
+			content: "Content of question",
+			attachmentsIds: ["1", "2"],
+		});
+
+		expect(result.isRight()).toBeTruthy();
+
+		expect(inMemoryAnswerAttachmentsRepository.items).toHaveLength(2);
+		expect(inMemoryAnswerAttachmentsRepository.items).toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({
+					attachmentId: new UniqueEntityId("1"),
+					answerId: result.value?.answer.id,
+				}),
+				expect.objectContaining({
+					attachmentId: new UniqueEntityId("2"),
+					answerId: result.value?.answer.id,
+				}),
+			]),
+		);
+	});
 });

@@ -5,6 +5,9 @@ export class InMemoryAnswerAttachmentsRepository
 	implements AnswerAttachmentsRepository
 {
 	public items: AnswerAttachment[] = [];
+	async createMany(attachments: AnswerAttachment[]): Promise<void> {
+		this.items.push(...attachments);
+	}
 
 	async findManyByAnswerId(answerId: string): Promise<AnswerAttachment[]> {
 		const answerAttachments = this.items.filter(
@@ -12,6 +15,14 @@ export class InMemoryAnswerAttachmentsRepository
 		);
 
 		return answerAttachments;
+	}
+
+	async deleteMany(attachments: AnswerAttachment[]): Promise<void> {
+		const questionAttachments = this.items.filter((item) => {
+			return !attachments.some((attachment) => attachment.equals(item));
+		});
+
+		this.items = questionAttachments;
 	}
 
 	async deleteManyByAnswerId(answerId: string): Promise<void> {

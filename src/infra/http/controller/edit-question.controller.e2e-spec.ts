@@ -33,13 +33,13 @@ describe("Edit question (E2E)", () => {
 
 	test("[PUT]: /questions/:id", async () => {
 		const user = await studentFactory.makePrismaStudent();
-		const question = await questionFactory.makePrismaQuestion({
-			authorId: user.id,
-		});
 
-		const [attachment1, attachment2] = await Promise.all([
+		const [attachment1, attachment2, question] = await Promise.all([
 			attachmentFactory.makePrismaAttachment(),
 			attachmentFactory.makePrismaAttachment(),
+			questionFactory.makePrismaQuestion({
+				authorId: user.id,
+			}),
 		]);
 
 		await Promise.all([

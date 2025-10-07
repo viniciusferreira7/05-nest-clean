@@ -33,6 +33,20 @@ export class InMemoryAnswersRepository implements AnswersRepository {
 			(item) => item.id.toString() === answer.id.toString(),
 		);
 
+		const newAttachments = answer.attachments.getNewItems();
+
+		if (!!newAttachments.length)
+			await this.answerAttachmentsRepository.createMany(
+				answer.attachments.getNewItems(),
+			);
+
+		const removedAttachments = answer.attachments.getRemovedItems();
+
+		if (!!removedAttachments.length)
+			await this.answerAttachmentsRepository.deleteMany(
+				answer.attachments.getRemovedItems(),
+			);
+
 		if (itemIndex >= 0) {
 			this.items[itemIndex] = answer;
 			DomainEvents.dispatchEventsForEntity(answer.id);
@@ -41,6 +55,9 @@ export class InMemoryAnswersRepository implements AnswersRepository {
 
 	async create(answer: Answer): Promise<void> {
 		this.items.push(answer);
+		await this.answerAttachmentsRepository.createMany(
+			answer.attachments.getItems(),
+		);
 
 		DomainEvents.dispatchEventsForEntity(answer.id);
 	}
