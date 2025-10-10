@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.4.0...v1.5.0) (2025-10-10)
+
+
+### Features
+
+* create comment with author class ([8cf7c6d](https://github.com/viniciusferreira7/05-nest-clean/commit/8cf7c6de8ae94736a61858c5d649a8414bafdd70))
+
 # [1.4.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.3.0...v1.4.0) (2025-10-10)
 
 
