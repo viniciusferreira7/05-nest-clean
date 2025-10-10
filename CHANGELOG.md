@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.3.0...v1.4.0) (2025-10-10)
+
+
+### Features
+
+* add core value object ([2dc3abe](https://github.com/viniciusferreira7/05-nest-clean/commit/2dc3abedd928e6be0999c7e390373279314dcade))
+
 # [1.3.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.2.0...v1.3.0) (2025-10-07)
 
 
