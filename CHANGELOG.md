@@ -1,3 +1,17 @@
+# [1.6.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.5.0...v1.6.0) (2025-10-17)
+
+
+### Bug Fixes
+
+* correct tests to fetch question comments ([387390a](https://github.com/viniciusferreira7/05-nest-clean/commit/387390a32fd8325dbd2537094b5634f7940e6c5f))
+
+
+### Features
+
+* add comment with author presenter ([1206d94](https://github.com/viniciusferreira7/05-nest-clean/commit/1206d941dc92b14ed1f10c0c0d6ecdce5b988801))
+* create method to find many question comments with author ([52ec943](https://github.com/viniciusferreira7/05-nest-clean/commit/52ec943a6f98500000056053ae878e2dfb3909db))
+* create prisma comment with author mapper ([ee374b1](https://github.com/viniciusferreira7/05-nest-clean/commit/ee374b129288ec4661c44d9fad2e8a323e06b3e6))
+
 # [1.5.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.4.0...v1.5.0) (2025-10-10)
 
 
