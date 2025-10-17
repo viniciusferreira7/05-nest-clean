@@ -1,3 +1,11 @@
+# [1.7.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.6.0...v1.7.0) (2025-10-17)
+
+
+### Features
+
+* implement comment with author into fetch answer comments use case ([a709632](https://github.com/viniciusferreira7/05-nest-clean/commit/a7096324701480ef378b0a338b1d593729c68ccd))
+* update fetch answer comments controller ([c1c8857](https://github.com/viniciusferreira7/05-nest-clean/commit/c1c8857c59f2981681ef0195c11fe6b0496048c9))
+
 # [1.6.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.5.0...v1.6.0) (2025-10-17)
 
 
