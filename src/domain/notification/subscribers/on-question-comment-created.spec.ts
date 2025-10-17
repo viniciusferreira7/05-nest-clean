@@ -4,9 +4,9 @@ import { InMemoryNotificationsRepository } from "test/repositories/in-memory-not
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments";
 import { InMemoryQuestionCommentsRepository } from "test/repositories/in-memory-question-comments-repository";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
+import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
 import { waitFor } from "test/utils/wait-for";
 import type { MockInstance } from "vitest";
-
 import {
 	SendNotificationUseCase,
 	type SendNotificationUseCaseRequest,
@@ -14,6 +14,7 @@ import {
 } from "../application/use-cases/send-notification";
 import { OnQuestionCommentCreated } from "./on-question-comment-created";
 
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository;
 
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
@@ -30,8 +31,11 @@ let sendNotificationSpy: MockInstance<
 
 describe("On Question Comment Created", () => {
 	beforeEach(() => {
-		inMemoryQuestionCommentsRepository =
-			new InMemoryQuestionCommentsRepository();
+		inMemoryStudentsRepository = new InMemoryStudentsRepository();
+
+		inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository(
+			inMemoryStudentsRepository,
+		);
 
 		inMemoryNotificationsRepository = new InMemoryNotificationsRepository();
 
