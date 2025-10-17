@@ -4,15 +4,17 @@ import { InMemoryAnswerAttachmentsRepository } from "test/repositories/in-memory
 import { InMemoryAnswerCommentsRepository } from "test/repositories/in-memory-answer-comments-repository";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
 import { InMemoryNotificationsRepository } from "test/repositories/in-memory-notifications-repository";
+import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
 import { waitFor } from "test/utils/wait-for";
 import type { MockInstance } from "vitest";
-
 import {
 	SendNotificationUseCase,
 	type SendNotificationUseCaseRequest,
 	type SendNotificationUseCaseResponse,
 } from "../application/use-cases/send-notification";
 import { OnAnswerCommentCreated } from "./on-answer-comment-created";
+
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
 
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository;
 
@@ -30,7 +32,11 @@ let sendNotificationSpy: MockInstance<
 
 describe("On Answer Comment Created", () => {
 	beforeEach(() => {
-		inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository();
+		inMemoryStudentsRepository = new InMemoryStudentsRepository();
+
+		inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(
+			inMemoryStudentsRepository,
+		);
 
 		inMemoryNotificationsRepository = new InMemoryNotificationsRepository();
 

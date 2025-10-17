@@ -10,7 +10,7 @@ export abstract class AnswerCommentsRepository {
 		props: PaginationParams,
 	): Promise<AnswerComment[]>;
 	abstract findManyByAnswerIdWithAuthor(
-		questionId: string,
+		answerId: string,
 		props: PaginationParams,
 	): Promise<CommentWithAuthor[]>;
 
