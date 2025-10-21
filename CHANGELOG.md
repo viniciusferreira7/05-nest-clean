@@ -1,3 +1,16 @@
+# [1.8.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.7.0...v1.8.0) (2025-10-21)
+
+
+### Bug Fixes
+
+* add missing dependencies ([11308d7](https://github.com/viniciusferreira7/05-nest-clean/commit/11308d7013399da87cd322bce269aa8428ab6197))
+
+
+### Features
+
+* create answer with author and implement on use case to fetch question answers ([bf9dc50](https://github.com/viniciusferreira7/05-nest-clean/commit/bf9dc50623084ae9ea9bd861098d626270aa0c31))
+* implement answer with author on controller to fetch question answers ([fa14833](https://github.com/viniciusferreira7/05-nest-clean/commit/fa1483393f4c25fa23d99d6c97ec38ecfcb4fa2d))
+
 # [1.7.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.6.0...v1.7.0) (2025-10-17)
 
 
