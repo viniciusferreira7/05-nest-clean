@@ -14,6 +14,10 @@ import {
 	type SendNotificationUseCaseResponse,
 } from "../application/use-cases/send-notification";
 import { OnAnswerCreated } from "./on-answer-created";
+import  { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository';
+
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
+
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
@@ -32,6 +36,7 @@ let sendNotificationSpy: MockInstance<
 
 describe("On Answer Created", () => {
 	beforeEach(() => {
+		inMemoryStudentsRepository = new InMemoryStudentsRepository();
 		inMemoryQuestionAttachmentsRepository =
 			new InMemoryQuestionAttachmentsRepository();
 		inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
@@ -48,6 +53,7 @@ describe("On Answer Created", () => {
 			new InMemoryAnswerAttachmentsRepository();
 		inMemoryAnswersRepository = new InMemoryAnswersRepository(
 			inMemoryAnswerAttachmentsRepository,
+			inMemoryStudentsRepository
 		);
 
 		sendNotificationSpy = vi.spyOn(sendNotificationUseCase, "execute");

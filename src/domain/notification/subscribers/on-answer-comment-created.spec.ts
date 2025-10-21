@@ -48,6 +48,7 @@ describe("On Answer Comment Created", () => {
 			new InMemoryAnswerAttachmentsRepository();
 		inMemoryAnswersRepository = new InMemoryAnswersRepository(
 			inMemoryAnswerAttachmentsRepository,
+			inMemoryStudentsRepository
 		);
 
 		sendNotificationSpy = vi.spyOn(sendNotificationUseCase, "execute");

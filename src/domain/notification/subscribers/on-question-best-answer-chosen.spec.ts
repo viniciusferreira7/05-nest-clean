@@ -14,6 +14,9 @@ import {
 	type SendNotificationUseCaseResponse,
 } from "../application/use-cases/send-notification";
 import { OnQuestionBestAnswerChosenCreated } from "./on-question-best-answer-chosen";
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository';
+
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
@@ -32,6 +35,8 @@ let sendNotificationSpy: MockInstance<
 
 describe("On Question Best Answer Chosen", () => {
 	beforeEach(() => {
+				inMemoryStudentsRepository = new InMemoryStudentsRepository();
+		
 		inMemoryQuestionAttachmentsRepository =
 			new InMemoryQuestionAttachmentsRepository();
 		inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
@@ -48,6 +53,7 @@ describe("On Question Best Answer Chosen", () => {
 			new InMemoryAnswerAttachmentsRepository();
 		inMemoryAnswersRepository = new InMemoryAnswersRepository(
 			inMemoryAnswerAttachmentsRepository,
+			inMemoryStudentsRepository
 		);
 
 		sendNotificationSpy = vi.spyOn(sendNotificationUseCase, "execute");
