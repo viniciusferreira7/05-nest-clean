@@ -6,6 +6,8 @@ import { AnswersRepository } from "@/domain/forum/application/repositories/answe
 import { Answer } from "@/domain/forum/enterprise/entities/answer";
 import { PrismaAnswerMapper } from "../mappers/prisma-answer-mapper";
 import { PrismaService } from "../prisma.service";
+import type { AnswerWithAuthor } from '@/domain/forum/enterprise/entities/value-object/answer-with-author copy';
+import { PrismaAnswerWithAuthorMapper } from '../mappers/prisma-comment-with-author-mapper copy';
 
 @Injectable()
 export class PrismaAnswersRepository implements AnswersRepository {
@@ -45,6 +47,27 @@ export class PrismaAnswersRepository implements AnswersRepository {
 
 		return answers.map(PrismaAnswerMapper.toDomain);
 	}
+
+		async findManyByQuestionIdWithAuthor(
+			questionId: string,
+			params: PaginationParams,
+		): Promise<AnswerWithAuthor[]> {
+			const answersWithAuthor = await this.prisma.answer.findMany({
+				where: {
+					questionId
+				},
+				include: {
+					author: true,
+				},
+				orderBy: {
+					createdAt: "desc",
+				},
+				take: 20,
+				skip: (params.page - 1) * 20,
+			});
+	
+			return answersWithAuthor.map(PrismaAnswerWithAuthorMapper.toDomain);
+		}
 
 	async create(answer: Answer): Promise<void> {
 		await this.prisma.answer.create({

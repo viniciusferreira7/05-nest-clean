@@ -31,7 +31,7 @@ export class InMemoryAnswersRepository implements AnswersRepository {
 		return answers;
 	}
 
-	async findManyByAnswerIdWithAuthor(
+	async findManyByQuestionIdWithAuthor(
 		questionId: string,
 		{ page }: PaginationParams,
 	): Promise<AnswerWithAuthor[]> {

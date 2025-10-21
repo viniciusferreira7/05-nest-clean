@@ -9,7 +9,7 @@ export abstract class AnswersRepository {
 		questionId: string,
 		params: PaginationParams,
 	): Promise<Answer[]>;
-	abstract findManyByAnswerIdWithAuthor(
+	abstract findManyByQuestionIdWithAuthor(
 		answerId: string,
 		props: PaginationParams,
 	): Promise<AnswerWithAuthor[]>;

@@ -63,14 +63,17 @@ describe("Fetch question answers", () => {
 			expect.arrayContaining([
 				expect.objectContaining({
 					authorId: student.id,
+					questionId: questionId,
 					answerId: answer1.id,
 				}),
 				expect.objectContaining({
 					authorId: student.id,
+					questionId: questionId,
 					answerId: answer2.id,
 				}),
 				expect.objectContaining({
 					authorId: student.id,
+					questionId: questionId,
 					answerId: answer3.id,
 				}),
 			]),

@@ -4,7 +4,7 @@ import { PaginationParams } from "@/core/repositories/pagination-params";
 import { QuestionCommentsRepository } from "@/domain/forum/application/repositories/question-comments-repository";
 import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";
 import type { CommentWithAuthor } from "@/domain/forum/enterprise/entities/value-object/comment-with-author";
-import { PrismaCommentWithAuthorMapper } from "../mappers/prisma-comment-with-author-mapper";
+import { PrismaCommentWithAuthorMapper } from "../mappers/prisma-answer-with-author-mapper";
 import { PrismaQuestionCommentMapper } from "../mappers/prisma-question-comment-mapper";
 import { PrismaService } from "../prisma.service";
 
