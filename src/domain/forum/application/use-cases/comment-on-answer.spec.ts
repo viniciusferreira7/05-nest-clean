@@ -22,6 +22,7 @@ describe("Comment on answer", () => {
 			new InMemoryAnswerAttachmentsRepository();
 		inMemoryAnswerRepository = new InMemoryAnswersRepository(
 			inMemoryAnswerAttachmentsRepository,
+			inMemoryStudentsRepository,
 		);
 
 		inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(

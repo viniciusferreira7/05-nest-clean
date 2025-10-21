@@ -3,12 +3,15 @@ import type { PaginationParams } from "@/core/repositories/pagination-params";
 import type { AnswerAttachmentsRepository } from "@/domain/forum/application/repositories/answer-attachments-repository";
 import type { AnswersRepository } from "@/domain/forum/application/repositories/answers-repository";
 import type { Answer } from "@/domain/forum/enterprise/entities/answer";
+import { AnswerWithAuthor } from "@/domain/forum/enterprise/entities/value-object/answer-with-author copy";
+import type { InMemoryStudentsRepository } from "./in-memory-students-repository";
 
 export class InMemoryAnswersRepository implements AnswersRepository {
 	public items: Answer[] = [];
 
 	constructor(
 		private answerAttachmentsRepository: AnswerAttachmentsRepository,
+		private studentsRepository: InMemoryStudentsRepository,
 	) {}
 
 	async findById(id: string): Promise<Answer | null> {
@@ -26,6 +29,41 @@ export class InMemoryAnswersRepository implements AnswersRepository {
 			.slice((page - 1) * 20, page * 20);
 
 		return answers;
+	}
+
+	async findManyByAnswerIdWithAuthor(
+		questionId: string,
+		{ page }: PaginationParams,
+	): Promise<AnswerWithAuthor[]> {
+		const answersWithAuthor = this.items
+			.filter((item) => {
+				return item.questionId.toString() === questionId
+			})
+			.slice((page - 1) * 20, page * 20)
+			.map((answer) => {
+				const authorDetails = this.studentsRepository.items.find((author) =>
+					author.id.equals(answer.authorId),
+				);
+
+				if (!authorDetails) {
+					throw new Error(
+						`Author with ID ${answer.authorId.toString()} does not exist.`,
+					);
+				}
+
+				return AnswerWithAuthor.create({
+					answerId: answer.id,
+					questionId: answer.questionId,
+					content: answer.content,
+					authorName: authorDetails?.name,
+					authorId: authorDetails?.id,
+					createdAt: answer.createdAt,
+					updatedAt: answer.updatedAt,
+				});
+			});
+
+
+		return answersWithAuthor;
 	}
 
 	async save(answer: Answer): Promise<void> {

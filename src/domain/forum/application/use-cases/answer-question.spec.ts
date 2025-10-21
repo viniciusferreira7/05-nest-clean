@@ -1,9 +1,10 @@
 import { InMemoryAnswerAttachmentsRepository } from "test/repositories/in-memory-answer-attachments";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
-
+import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
-
 import { AnswerQuestionUseCase } from "./answer-question";
+
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
 
 let inMemoryAnswerRepository: InMemoryAnswersRepository;
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
@@ -12,10 +13,13 @@ let sut: AnswerQuestionUseCase;
 
 describe("Create answer", () => {
 	beforeEach(() => {
+		inMemoryStudentsRepository = new InMemoryStudentsRepository();
+
 		inMemoryAnswerAttachmentsRepository =
 			new InMemoryAnswerAttachmentsRepository();
 		inMemoryAnswerRepository = new InMemoryAnswersRepository(
 			inMemoryAnswerAttachmentsRepository,
+			inMemoryStudentsRepository,
 		);
 		sut = new AnswerQuestionUseCase(inMemoryAnswerRepository);
 	});

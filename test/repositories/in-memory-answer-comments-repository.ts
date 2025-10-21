@@ -33,7 +33,7 @@ export class InMemoryAnswerCommentsRepository
 		answerId: string,
 		{ page }: PaginationParams,
 	): Promise<CommentWithAuthor[]> {
-		const questionComment = this.items
+		const answerComment = this.items
 			.filter((item) => item.answerId.toString() === answerId)
 			.slice((page - 1) * 20, page * 20)
 			.map((comment) => {
@@ -57,7 +57,7 @@ export class InMemoryAnswerCommentsRepository
 				});
 			});
 
-		return questionComment;
+		return answerComment;
 	}
 
 	async create(answerComment: AnswerComment): Promise<void> {
