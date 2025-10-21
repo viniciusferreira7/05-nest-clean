@@ -2,7 +2,7 @@ import type { UniqueEntityId } from "@/core/entities/value-object/unique-entity-
 import { ValueObject } from "@/core/entities/value-object/value-object";
 import type { Attachment } from '../attachments';
 
-export interface QuestionWithAuthorProps {
+export interface QuestionDetailsProps {
   questionId: UniqueEntityId;
   authorId: UniqueEntityId;
   authorName: string;
@@ -14,7 +14,7 @@ export interface QuestionWithAuthorProps {
   updatedAt?: Date | null;
 }
 
-export class QuestionWithAuthor extends ValueObject<QuestionWithAuthorProps> {
+export class QuestionDetails extends ValueObject<QuestionDetailsProps> {
   get questionId() {
     return this.props.questionId;
   }
@@ -43,7 +43,7 @@ export class QuestionWithAuthor extends ValueObject<QuestionWithAuthorProps> {
     return this.props.updatedAt;
   }
 
-  static create(props: QuestionWithAuthorProps) {
-    return new QuestionWithAuthor(props);
+  static create(props: QuestionDetailsProps) {
+    return new QuestionDetails(props);
   }
 }
