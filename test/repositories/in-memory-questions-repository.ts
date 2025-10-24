@@ -50,7 +50,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
 
 		const attachments = questionAttachments.map((item) => {
 			const attachment = this.attachmentsRepository.items.find((att) =>
-				att.id.equals(item.id),
+				att.id.equals(item.attachmentId),
 			);
 
 			if (!attachment) {

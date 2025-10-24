@@ -1,4 +1,7 @@
+import { makeAttachment } from "test/factories/make-attachment";
 import { makeQuestion } from "test/factories/make-question";
+import { makeQuestionAttachment } from "test/factories/make-question-attachment";
+import { makeStudent } from "test/factories/make-student";
 import { InMemoryAttachmentsRepository } from "test/repositories/in-memory-attachments-repository";
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
@@ -30,11 +33,33 @@ describe("Get question by slug", () => {
 	});
 
 	it("should be able to get question by slug", async () => {
-		const newQuestion = makeQuestion({
-			slug: Slug.create("example-question"),
+		const student = makeStudent({
+			name: "John doe",
 		});
 
-		await inMemoryQuestionsRepository.create(newQuestion);
+		await inMemoryStudentsRepository.create(student);
+
+		const attachment = makeAttachment({
+			title: "Some attachment",
+		});
+
+		await inMemoryAttachmentsRepository.create(attachment);
+
+		const question = makeQuestion({
+			slug: Slug.create("example-question"),
+			authorId: student.id,
+		});
+
+		const questionAttachment = makeQuestionAttachment({
+			attachmentId: attachment.id,
+			questionId: question.id,
+		});
+
+		await inMemoryQuestionAttachmentsRepository.createMany([
+			questionAttachment,
+		]);
+
+		await inMemoryQuestionsRepository.create(question);
 
 		const result = await sut.execute({
 			slug: "example-question",
@@ -43,9 +68,22 @@ describe("Get question by slug", () => {
 		expect(result.isRight()).toBeTruthy();
 
 		if (result.isRight()) {
-			expect(result.value?.question.id).toBeTruthy();
-			expect(inMemoryQuestionsRepository.items[0]).toEqual(
-				result.value?.question,
+			expect(result.value?.question).toEqual(
+				expect.objectContaining({
+					questionId: question.id,
+					authorId: student.id,
+					authorName: student.name,
+					title: question.title,
+					content: question.content,
+					attachments: expect.arrayContaining([
+						expect.objectContaining({
+							title: "Some attachment",
+						}),
+					]),
+					bestAnswerId: question.bestAnswerId,
+					createdAt: question.createdAt,
+					updatedAt: question.updatedAt,
+				}),
 			);
 		}
 	});
