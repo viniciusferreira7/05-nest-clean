@@ -1,28 +1,36 @@
 import { makeQuestion } from "test/factories/make-question";
 import { makeQuestionAttachment } from "test/factories/make-question-attachment";
+import { InMemoryAttachmentsRepository } from "test/repositories/in-memory-attachments-repository";
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
-
+import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
-
 import { EditQuestionUseCase } from "./edit-question";
 
-let inMemoryQuestionRepository: InMemoryQuestionsRepository;
+let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository;
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
+
 let sut: EditQuestionUseCase;
 
 describe("Edit question", () => {
 	beforeEach(() => {
+		inMemoryStudentsRepository = new InMemoryStudentsRepository();
+		inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository();
 		inMemoryQuestionAttachmentsRepository =
 			new InMemoryQuestionAttachmentsRepository();
-		inMemoryQuestionRepository = new InMemoryQuestionsRepository(
+
+		inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
 			inMemoryQuestionAttachmentsRepository,
+			inMemoryStudentsRepository,
+			inMemoryAttachmentsRepository,
 		);
 
 		sut = new EditQuestionUseCase(
-			inMemoryQuestionRepository,
+			inMemoryQuestionsRepository,
 			inMemoryQuestionAttachmentsRepository,
 		);
 	});
@@ -49,7 +57,7 @@ describe("Edit question", () => {
 			}),
 		);
 
-		await inMemoryQuestionRepository.create(newQuestion);
+		await inMemoryQuestionsRepository.create(newQuestion);
 
 		const result = await sut.execute({
 			authorId: authorId.toString(),
@@ -62,7 +70,7 @@ describe("Edit question", () => {
 		expect(result.isRight()).toBeTruthy();
 
 		expect(
-			inMemoryQuestionRepository.items.some((item) => {
+			inMemoryQuestionsRepository.items.some((item) => {
 				const isSameAuthorId = item.authorId === authorId;
 				const isSameQuestionId = item.id.toString() === questionId;
 				const isSameTitleId = item.title === "Edited title";
@@ -74,16 +82,16 @@ describe("Edit question", () => {
 			}),
 		).toBeTruthy();
 
-		expect(inMemoryQuestionRepository.items[0]).toMatchObject({
+		expect(inMemoryQuestionsRepository.items[0]).toMatchObject({
 			title: "Edited title",
 			content: "Edited content",
 		});
 
 		expect(
-			inMemoryQuestionRepository.items[0].attachments.currentItems,
+			inMemoryQuestionsRepository.items[0].attachments.currentItems,
 		).toHaveLength(2);
 		expect(
-			inMemoryQuestionRepository.items[0].attachments.currentItems,
+			inMemoryQuestionsRepository.items[0].attachments.currentItems,
 		).toEqual([
 			expect.objectContaining({ attachmentId: new UniqueEntityId("1") }),
 			expect.objectContaining({ attachmentId: new UniqueEntityId("3") }),
@@ -112,7 +120,7 @@ describe("Edit question", () => {
 			}),
 		);
 
-		await inMemoryQuestionRepository.create(newQuestion);
+		await inMemoryQuestionsRepository.create(newQuestion);
 
 		const result = await sut.execute({
 			authorId: authorId.toString(),
@@ -165,7 +173,7 @@ describe("Edit question", () => {
 			new UniqueEntityId(questionId),
 		);
 
-		await inMemoryQuestionRepository.create(newQuestion);
+		await inMemoryQuestionsRepository.create(newQuestion);
 
 		const result = await sut.execute({
 			authorId: "author-2",

@@ -1,26 +1,35 @@
 import { makeQuestion } from "test/factories/make-question";
 import { makeQuestionAttachment } from "test/factories/make-question-attachment";
+import { InMemoryAttachmentsRepository } from "test/repositories/in-memory-attachments-repository";
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
-
+import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
-
 import { DeleteQuestionUseCase } from "./delete-question";
 
-let inMemoryQuestionRepository: InMemoryQuestionsRepository;
+let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository;
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
+
 let sut: DeleteQuestionUseCase;
 
 describe("Delete question", () => {
 	beforeEach(() => {
+		inMemoryStudentsRepository = new InMemoryStudentsRepository();
+		inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository();
 		inMemoryQuestionAttachmentsRepository =
 			new InMemoryQuestionAttachmentsRepository();
-		inMemoryQuestionRepository = new InMemoryQuestionsRepository(
+
+		inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
 			inMemoryQuestionAttachmentsRepository,
+			inMemoryStudentsRepository,
+			inMemoryAttachmentsRepository,
 		);
-		sut = new DeleteQuestionUseCase(inMemoryQuestionRepository);
+
+		sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository);
 	});
 
 	it("should be able to delete question", async () => {
@@ -34,7 +43,7 @@ describe("Delete question", () => {
 			new UniqueEntityId(questionId),
 		);
 
-		await inMemoryQuestionRepository.create(newQuestion);
+		await inMemoryQuestionsRepository.create(newQuestion);
 
 		inMemoryQuestionAttachmentsRepository.items.push(
 			makeQuestionAttachment({
@@ -54,11 +63,11 @@ describe("Delete question", () => {
 
 		expect(result.isRight()).toBeTruthy();
 		expect(
-			inMemoryQuestionRepository.items.every(
+			inMemoryQuestionsRepository.items.every(
 				(item) => item.id.toString() !== questionId,
 			),
 		).toBeTruthy();
-		expect(inMemoryQuestionRepository.items).toHaveLength(0);
+		expect(inMemoryQuestionsRepository.items).toHaveLength(0);
 		expect(inMemoryQuestionAttachmentsRepository.items).toHaveLength(0);
 	});
 
@@ -82,7 +91,7 @@ describe("Delete question", () => {
 			new UniqueEntityId(questionId),
 		);
 
-		await inMemoryQuestionRepository.create(newQuestion);
+		await inMemoryQuestionsRepository.create(newQuestion);
 
 		const result = await sut.execute({
 			authorId: "author-2",

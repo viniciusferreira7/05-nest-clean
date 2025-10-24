@@ -2,6 +2,7 @@ import { makeAnswer } from "test/factories/make-answer";
 import { makeQuestion } from "test/factories/make-question";
 import { InMemoryAnswerAttachmentsRepository } from "test/repositories/in-memory-answer-attachments";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
+import { InMemoryAttachmentsRepository } from "test/repositories/in-memory-attachments-repository";
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
 import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
@@ -12,7 +13,9 @@ import { ChooseQuestionBestAnswerUseCase } from "./choose-question-best-answer";
 
 let inMemoryStudentsRepository: InMemoryStudentsRepository;
 
-let inMemoryQuestionRepository: InMemoryQuestionsRepository;
+let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository;
+
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
 
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
@@ -22,11 +25,16 @@ let sut: ChooseQuestionBestAnswerUseCase;
 describe("Choose question best answer", () => {
 	beforeEach(() => {
 		inMemoryStudentsRepository = new InMemoryStudentsRepository();
+		inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository();
+		inMemoryQuestionAttachmentsRepository =
+			new InMemoryQuestionAttachmentsRepository();
 
 		inMemoryQuestionAttachmentsRepository =
 			new InMemoryQuestionAttachmentsRepository();
-		inMemoryQuestionRepository = new InMemoryQuestionsRepository(
+		inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
 			inMemoryQuestionAttachmentsRepository,
+			inMemoryStudentsRepository,
+			inMemoryAttachmentsRepository,
 		);
 		inMemoryAnswerAttachmentsRepository =
 			new InMemoryAnswerAttachmentsRepository();
@@ -35,7 +43,7 @@ describe("Choose question best answer", () => {
 			inMemoryStudentsRepository,
 		);
 		sut = new ChooseQuestionBestAnswerUseCase(
-			inMemoryQuestionRepository,
+			inMemoryQuestionsRepository,
 			inMemoryAnswerRepository,
 		);
 	});
@@ -47,7 +55,7 @@ describe("Choose question best answer", () => {
 			questionId: question.id,
 		});
 
-		await inMemoryQuestionRepository.create(question);
+		await inMemoryQuestionsRepository.create(question);
 		await inMemoryAnswerRepository.create(answer);
 
 		const result = await sut.execute({
@@ -57,7 +65,7 @@ describe("Choose question best answer", () => {
 
 		expect(result.isRight()).toBeTruthy();
 		expect(
-			inMemoryQuestionRepository.items.some(
+			inMemoryQuestionsRepository.items.some(
 				(item) => item.bestAnswerId === answer.id,
 			),
 		).toBeTruthy();
@@ -96,7 +104,7 @@ describe("Choose question best answer", () => {
 			questionId: question.id,
 		});
 
-		await inMemoryQuestionRepository.create(question);
+		await inMemoryQuestionsRepository.create(question);
 		await inMemoryAnswerRepository.create(answer);
 
 		await sut.execute({

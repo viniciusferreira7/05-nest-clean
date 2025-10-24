@@ -1,5 +1,6 @@
 import { makeQuestion } from "test/factories/make-question";
 import { makeQuestionComment } from "test/factories/make-question-comment";
+import { InMemoryAttachmentsRepository } from "test/repositories/in-memory-attachments-repository";
 import { InMemoryNotificationsRepository } from "test/repositories/in-memory-notifications-repository";
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments";
 import { InMemoryQuestionCommentsRepository } from "test/repositories/in-memory-question-comments-repository";
@@ -22,6 +23,7 @@ let sendNotificationUseCase: SendNotificationUseCase;
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository;
 
 let sendNotificationSpy: MockInstance<
 	(
@@ -32,6 +34,9 @@ let sendNotificationSpy: MockInstance<
 describe("On Question Comment Created", () => {
 	beforeEach(() => {
 		inMemoryStudentsRepository = new InMemoryStudentsRepository();
+		inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository();
+		inMemoryQuestionAttachmentsRepository =
+			new InMemoryQuestionAttachmentsRepository();
 
 		inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository(
 			inMemoryStudentsRepository,
@@ -47,6 +52,8 @@ describe("On Question Comment Created", () => {
 			new InMemoryQuestionAttachmentsRepository();
 		inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
 			inMemoryQuestionAttachmentsRepository,
+			inMemoryStudentsRepository,
+			inMemoryAttachmentsRepository,
 		);
 
 		sendNotificationSpy = vi.spyOn(sendNotificationUseCase, "execute");
