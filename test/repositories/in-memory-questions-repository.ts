@@ -68,6 +68,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
 			authorName: author.name,
 			title: question.title,
 			content: question.content,
+			slug: question.slug,
 			attachments: attachments,
 			bestAnswerId: question.bestAnswerId,
 			createdAt: question.createdAt,
