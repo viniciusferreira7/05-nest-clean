@@ -13,7 +13,8 @@
 		"enabled": true,
 		"rules": {
 			"correctness": {
-				"noNodejsModules": "off"
+				"noNodejsModules": "off",
+				"noUnusedImports": "error"
 			},
 			"recommended": false,
 			"complexity": {
