@@ -1,7 +1,7 @@
 import type { PaginationParams } from "@/core/repositories/pagination-params";
 
 import type { Question } from "../../enterprise/entities/question";
-import type { QuestionDetails } from '../../enterprise/entities/value-object/question-details';
+import type { QuestionDetails } from "../../enterprise/entities/value-object/question-details";
 
 export abstract class QuestionsRepository {
 	abstract findById(id: string): Promise<Question | null>;

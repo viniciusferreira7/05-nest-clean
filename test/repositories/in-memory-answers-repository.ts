@@ -37,7 +37,7 @@ export class InMemoryAnswersRepository implements AnswersRepository {
 	): Promise<AnswerWithAuthor[]> {
 		const answersWithAuthor = this.items
 			.filter((item) => {
-				return item.questionId.toString() === questionId
+				return item.questionId.toString() === questionId;
 			})
 			.slice((page - 1) * 20, page * 20)
 			.map((answer) => {
@@ -61,7 +61,6 @@ export class InMemoryAnswersRepository implements AnswersRepository {
 					updatedAt: answer.updatedAt,
 				});
 			});
-
 
 		return answersWithAuthor;
 	}

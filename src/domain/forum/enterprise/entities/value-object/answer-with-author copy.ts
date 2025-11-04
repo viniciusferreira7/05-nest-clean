@@ -3,7 +3,7 @@ import { ValueObject } from "@/core/entities/value-object/value-object";
 
 export interface AnswerWithAuthorProps {
 	answerId: UniqueEntityId;
-	questionId: UniqueEntityId
+	questionId: UniqueEntityId;
 	content: string;
 	authorId: UniqueEntityId;
 	authorName: string;

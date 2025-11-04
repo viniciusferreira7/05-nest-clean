@@ -1,4 +1,4 @@
-import type { AnswerWithAuthor } from '@/domain/forum/enterprise/entities/value-object/answer-with-author copy';
+import type { AnswerWithAuthor } from "@/domain/forum/enterprise/entities/value-object/answer-with-author copy";
 
 export class AnswerWithAuthorPresenter {
 	static toHttp(answerWithAuthor: AnswerWithAuthor) {

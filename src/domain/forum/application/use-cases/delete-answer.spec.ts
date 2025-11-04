@@ -2,12 +2,10 @@ import { makeAnswer } from "test/factories/make-answer";
 import { makeAnswerAttachment } from "test/factories/make-answer-attachment";
 import { InMemoryAnswerAttachmentsRepository } from "test/repositories/in-memory-answer-attachments";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
-
+import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
-
 import { DeleteAnswerUseCase } from "./delete-answer";
-import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository';
 
 let inMemoryStudentsRepository: InMemoryStudentsRepository;
 
@@ -17,13 +15,13 @@ let sut: DeleteAnswerUseCase;
 
 describe("Delete Answer", () => {
 	beforeEach(() => {
-				inMemoryStudentsRepository = new InMemoryStudentsRepository();
-		
+		inMemoryStudentsRepository = new InMemoryStudentsRepository();
+
 		inMemoryAnswerAttachmentsRepository =
 			new InMemoryAnswerAttachmentsRepository();
 		inMemoryAnswersRepository = new InMemoryAnswersRepository(
 			inMemoryAnswerAttachmentsRepository,
-			inMemoryStudentsRepository
+			inMemoryStudentsRepository,
 		);
 
 		sut = new DeleteAnswerUseCase(inMemoryAnswersRepository);

@@ -3,7 +3,6 @@ import { Injectable } from "@nestjs/common";
 import { Either, left, right } from "@/core/either";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
 
-import { Question } from "../../enterprise/entities/question";
 import type { QuestionDetails } from "../../enterprise/entities/value-object/question-details";
 import { QuestionsRepository } from "../repositories/questions-repository";
 

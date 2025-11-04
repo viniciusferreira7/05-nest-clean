@@ -3,7 +3,7 @@ import type {
 	User as PrismaUser,
 } from "generated/prisma";
 import { UniqueEntityId } from "@/core/entities/value-object/unique-entity-id";
-import { AnswerWithAuthor } from '@/domain/forum/enterprise/entities/value-object/answer-with-author copy';
+import { AnswerWithAuthor } from "@/domain/forum/enterprise/entities/value-object/answer-with-author copy";
 
 type PrismaAnswerWithAuthor = PrismaAnswer & {
 	author: PrismaUser;

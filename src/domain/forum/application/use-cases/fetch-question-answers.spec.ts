@@ -59,7 +59,7 @@ describe("Fetch question answers", () => {
 		expect(result.isRight()).toBeTruthy();
 		expect(result.value?.answers).toHaveLength(3);
 
-			expect(result.value?.answers).toEqual(
+		expect(result.value?.answers).toEqual(
 			expect.arrayContaining([
 				expect.objectContaining({
 					authorId: student.id,
@@ -78,7 +78,6 @@ describe("Fetch question answers", () => {
 				}),
 			]),
 		);
-	
 	});
 
 	it("should be able to fetch paginated question answers", async () => {
@@ -90,7 +89,7 @@ describe("Fetch question answers", () => {
 			await inMemoryAnswerRepository.create(
 				makeAnswer({
 					questionId,
-					authorId: student.id
+					authorId: student.id,
 				}),
 			);
 		}
@@ -102,6 +101,5 @@ describe("Fetch question answers", () => {
 
 		expect(result.isRight()).toBeTruthy();
 		expect(result.value?.answers).toHaveLength(2);
-		
 	});
 });
