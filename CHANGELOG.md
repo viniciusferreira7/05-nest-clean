@@ -1,3 +1,19 @@
+# [1.9.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.8.0...v1.9.0) (2025-11-04)
+
+
+### Bug Fixes
+
+* add missing dependencie on in memory question repository ([584c2d4](https://github.com/viniciusferreira7/05-nest-clean/commit/584c2d409ec9a27a464b39e13d5423747dae30bb))
+
+
+### Features
+
+* create abstract method to find question details by slug ([8c59051](https://github.com/viniciusferreira7/05-nest-clean/commit/8c5905183f61925ba976f956a28fcdaefc208448))
+* create question details ([868e83f](https://github.com/viniciusferreira7/05-nest-clean/commit/868e83ff80f1c4dd0561abf9d340e7b3e0d4397b))
+* create question details presenter and attachment presenter ([6ed22e9](https://github.com/viniciusferreira7/05-nest-clean/commit/6ed22e967d979be414efccf2c5dcf7f80ec4b222))
+* implement abstract method into in memory question repository ([2a261e8](https://github.com/viniciusferreira7/05-nest-clean/commit/2a261e88309ab18a00ae9f96978a72ff6aeb7aff))
+* implement missing method on prisma questions repository ([8b18f71](https://github.com/viniciusferreira7/05-nest-clean/commit/8b18f7191d45d9baef504acf9c7e343728ad845e))
+
 # [1.8.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.7.0...v1.8.0) (2025-10-21)
 
 
