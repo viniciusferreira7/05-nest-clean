@@ -1,3 +1,13 @@
+# [1.10.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.9.0...v1.10.0) (2025-11-07)
+
+
+### Features
+
+* add new repository and module to make module ref  and database module ([e9e8934](https://github.com/viniciusferreira7/05-nest-clean/commit/e9e8934356089c4c7774a1baff27d563f06ed9d6))
+* create events module ([09ba9e8](https://github.com/viniciusferreira7/05-nest-clean/commit/09ba9e8cddad969f4335d3f551c482e69400e309))
+* create mapper and repository to prisma notification ([ffe95c0](https://github.com/viniciusferreira7/05-nest-clean/commit/ffe95c0ac63c8e5f30c0085ffa55bf1f52c14acc))
+* create notifications table ([256d3c3](https://github.com/viniciusferreira7/05-nest-clean/commit/256d3c3b396af48e6b9fa75d89c763017ca90c00))
+
 # [1.9.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.8.0...v1.9.0) (2025-11-04)
 
 
