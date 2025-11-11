@@ -90,8 +90,6 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
 		await this.questionAttachmentsRepository.createMany(
 			question.attachments.getItems(),
 		);
-
-		DomainEvents.dispatchEventsForEntity(question.id);
 	}
 
 	async save(question: Question): Promise<void> {

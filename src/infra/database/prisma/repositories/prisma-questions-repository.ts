@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { DomainEvents } from "@/core/events/domain-events";
 import type { PaginationParams } from "@/core/repositories/pagination-params";
 import { QuestionAttachmentsRepository } from "@/domain/forum/application/repositories/question-attachments-repository";
 import type { QuestionsRepository } from "@/domain/forum/application/repositories/questions-repository";
@@ -107,6 +108,8 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 					)
 				: Promise.resolve(),
 		]);
+
+		DomainEvents.dispatchEventsForEntity(question.id);
 	}
 
 	async delete(question: Question): Promise<void> {

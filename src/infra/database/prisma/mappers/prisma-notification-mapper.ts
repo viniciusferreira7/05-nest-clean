@@ -13,7 +13,7 @@ export class PrismaNotificationMapper {
 				content: raw.content,
 				recipientId: new UniqueEntityId(raw.recipientId),
 				createdAt: raw.createdAt,
-				readAt: raw.readAt ?? undefined,
+				readAt: raw.readAt,
 			},
 			new UniqueEntityId(raw.id),
 		);
