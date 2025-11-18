@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-
+import { DomainEvents } from "@/core/events/domain-events";
 import { PaginationParams } from "@/core/repositories/pagination-params";
 import { AnswerCommentsRepository } from "@/domain/forum/application/repositories/answer-comments-repository";
 import { AnswerComment } from "@/domain/forum/enterprise/entities/answer-comment";
@@ -7,7 +7,6 @@ import type { CommentWithAuthor } from "@/domain/forum/enterprise/entities/value
 import { PrismaAnswerCommentMapper } from "../mappers/prisma-answer-comment-mapper";
 import { PrismaCommentWithAuthorMapper } from "../mappers/prisma-answer-with-author-mapper";
 import { PrismaService } from "../prisma.service";
-import { DomainEvents } from "@/core/events/domain-events";
 
 @Injectable()
 export class PrismaAnswerCommentsRepository
