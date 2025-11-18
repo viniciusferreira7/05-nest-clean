@@ -44,7 +44,15 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma client
-        run: pnpm prisma generate
+        run: |
+          for i in {1..5}; do
+            echo "Attempt $i of 5..."
+            pnpm prisma generate && break
+            if [ $i -lt 5 ]; then
+              echo "Failed, waiting $(($i * 30)) seconds..."
+              sleep $(($i * 30))
+            fi
+          done
 
       - name: Run Biome check
         run: pnpm run check
@@ -83,7 +91,15 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma client
-        run: pnpm prisma generate
+        run: |
+          for i in {1..5}; do
+            echo "Attempt $i of 5..."
+            pnpm prisma generate && break
+            if [ $i -lt 5 ]; then
+              echo "Failed, waiting $(($i * 30)) seconds..."
+              sleep $(($i * 30))
+            fi
+          done
 
       - name: Run unit tests
         run: pnpm test
@@ -145,7 +161,15 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma client
-        run: pnpm prisma generate
+        run: |
+          for i in {1..5}; do
+            echo "Attempt $i of 5..."
+            pnpm prisma generate && break
+            if [ $i -lt 5 ]; then
+              echo "Failed, waiting $(($i * 30)) seconds..."
+              sleep $(($i * 30))
+            fi
+          done
 
       - name: Run database migrations
         run: pnpm prisma migrate deploy
@@ -224,7 +248,15 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma client
-        run: pnpm prisma generate
+        run: |
+          for i in {1..5}; do
+            echo "Attempt $i of 5..."
+            pnpm prisma generate && break
+            if [ $i -lt 5 ]; then
+              echo "Failed, waiting $(($i * 30)) seconds..."
+              sleep $(($i * 30))
+            fi
+          done
 
       - name: Build application
         run: pnpm run build
