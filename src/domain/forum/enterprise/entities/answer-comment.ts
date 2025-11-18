@@ -22,9 +22,11 @@ export class AnswerComment extends Comment<AnswerCommentProps> {
 			id,
 		);
 
-		answerComment.addDomainEvent(
-			new AnswerCommentCreatedEvent(answerComment, answerComment.answerId),
-		);
+		if (!id) {
+			answerComment.addDomainEvent(
+				new AnswerCommentCreatedEvent(answerComment, answerComment.answerId),
+			);
+		}
 
 		return answerComment;
 	}

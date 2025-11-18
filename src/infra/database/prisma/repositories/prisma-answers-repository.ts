@@ -105,8 +105,6 @@ export class PrismaAnswersRepository implements AnswersRepository {
 					)
 				: Promise.resolve(),
 		]);
-
-		DomainEvents.dispatchEventsForEntity(answer.id);
 	}
 
 	async delete(answer: Answer): Promise<void> {
