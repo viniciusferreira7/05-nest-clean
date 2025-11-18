@@ -3,17 +3,15 @@ import { JwtService } from "@nestjs/jwt";
 import request from "supertest";
 import { makeModuleRef } from "test/factories/make-module-ref";
 import { QuestionFactory } from "test/factories/make-question";
-import { QuestionCommentFactory } from "test/factories/make-question-comment";
 import { StudentFactory } from "test/factories/make-student";
-import { test } from "vitest";
+import { waitFor } from "test/utils/wait-for";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 
-describe("Comment on question (E2E)", () => {
+describe("On answer created (E2E)", () => {
 	let app: INestApplication;
 	let prisma: PrismaService;
 	let studentFactory: StudentFactory;
 	let questionFactory: QuestionFactory;
-	let questionCommentFactory: QuestionCommentFactory;
 	let jwt: JwtService;
 
 	beforeAll(async () => {
@@ -23,13 +21,11 @@ describe("Comment on question (E2E)", () => {
 		prisma = moduleRef.get(PrismaService);
 		studentFactory = moduleRef.get(StudentFactory);
 		questionFactory = moduleRef.get(QuestionFactory);
-		questionCommentFactory = moduleRef.get(QuestionCommentFactory);
 		jwt = moduleRef.get(JwtService);
-
 		await app.init();
 	});
 
-	test("[POST]: /questions/:questionId/comments", async () => {
+	it("should be send a notification when answer is created", async () => {
 		const user = await studentFactory.makePrismaStudent();
 		const question = await questionFactory.makePrismaQuestion({
 			authorId: user.id,
@@ -37,30 +33,25 @@ describe("Comment on question (E2E)", () => {
 
 		const accessToken = jwt.sign({ sub: user.id.toString() });
 
+		//TODO: add place to put OnAnswerCreate event
+
 		const response = await request(app.getHttpServer())
-			.post(`/questions/${question.id}/comments`)
+			.post(`/questions/${question.id}/answers`)
 			.send({
-				content: "Comment on question content",
+				content: "Answer question content",
+				attachments: [],
 			})
 			.set("Authorization", `Bearer ${accessToken}`);
 
-		expect(response.statusCode).toBe(201);
+		await waitFor(async () => {
+			const notificationOnDatabase = await prisma.notification.findMany({
+				where: {
+					recipientId: user.id.toString(),
+				},
+			});
 
-		const questionCommentOnDatabase = await prisma.comment.findFirst({
-			where: {
-				authorId: user.id.toString(),
-				questionId: question.id.toString(),
-				content: "Comment on question content",
-			},
+			expect(notificationOnDatabase).not.toBeNull();
 		});
-
-		expect(questionCommentOnDatabase).toEqual(
-			expect.objectContaining({
-				content: "Comment on question content",
-				authorId: user.id.toString(),
-				questionId: question.id.toString(),
-			}),
-		);
 	});
 
 	afterAll(async () => {
