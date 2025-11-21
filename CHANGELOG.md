@@ -1,3 +1,15 @@
+# [1.11.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.10.0...v1.11.0) (2025-11-21)
+
+
+### Bug Fixes
+
+* correct events ([89f1669](https://github.com/viniciusferreira7/05-nest-clean/commit/89f166921508849207a4adb55f736e12e5d3d64c))
+
+
+### Features
+
+* add domain events into prisma repositories ([ae064bb](https://github.com/viniciusferreira7/05-nest-clean/commit/ae064bb4a160ba8b8a2dbb984197931b79d07359))
+
 # [1.10.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.9.0...v1.10.0) (2025-11-07)
 
 
