@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.11.1...v1.12.0) (2025-11-21)
+
+
+### Features
+
+* add flag to dispatch events ([fba0f20](https://github.com/viniciusferreira7/05-nest-clean/commit/fba0f20016225c273e7620ec3bc34df518299364))
+
 ## [1.11.1](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.11.0...v1.11.1) (2025-11-21)
 
 
