@@ -22,6 +22,7 @@ A modern REST API for a forum/Q&A system built with NestJS and Clean Architectur
 - [CI/CD](#-cicd)
 - [Contributing](#-contributing)
 - [License](#-license)
+- [Documentation](#documentation)
 
 ## 🛠 Technologies
 
@@ -48,10 +49,11 @@ A modern REST API for a forum/Q&A system built with NestJS and Clean Architectur
 
 ### Advanced Features
 - 🏆 **Best Answer System** - Mark and track best answers for questions
-- 🔔 **Event-Driven Notifications** - Real-time notifications using domain events
+- 🔔 **Event-Driven Notifications** - Real-time notifications using domain events with smart text truncation
 - 🔍 **Search & Filtering** - Fetch recent questions and filter by various criteria
 - 📊 **Slug Generation** - SEO-friendly URLs for questions
 - ⏰ **Timestamps** - Automatic creation and update tracking
+- ✂️ **Smart Text Truncation** - Conditional substring display with ellipsis only when necessary
 
 ## 🏗 Architecture
 
@@ -298,6 +300,12 @@ test: test improvements
 refactor: code refactoring
 chore: maintenance tasks
 ```
+
+## 📚 Documentation
+
+Detailed documentation for specific features and systems:
+
+- **[Smart Text Truncation](./docs/SMART_TEXT_TRUNCATION.md)** - Learn about the intelligent text truncation system used in notifications and content display
 
 ## 📄 License
 
