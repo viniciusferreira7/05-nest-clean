@@ -7,6 +7,7 @@ dotenv.config({ path: ".env.test", override: true });
 import { execSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { PrismaClient } from "generated/prisma";
+import { DomainEvents } from "@/core/events/domain-events";
 
 const prisma = new PrismaClient();
 
@@ -31,6 +32,8 @@ beforeAll(async () => {
 	process.env.PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK = "true";
 
 	process.env.DATABASE_URL = databaseUrl;
+
+	DomainEvents.shouldRun = false;
 
 	execSync("pnpm prisma migrate deploy");
 });

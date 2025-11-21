@@ -5,6 +5,7 @@ import { makeModuleRef } from "test/factories/make-module-ref";
 import { QuestionFactory } from "test/factories/make-question";
 import { StudentFactory } from "test/factories/make-student";
 import { waitFor } from "test/utils/wait-for";
+import { DomainEvents } from "@/core/events/domain-events";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 
 describe("On answer created (E2E)", () => {
@@ -22,6 +23,9 @@ describe("On answer created (E2E)", () => {
 		studentFactory = moduleRef.get(StudentFactory);
 		questionFactory = moduleRef.get(QuestionFactory);
 		jwt = moduleRef.get(JwtService);
+
+		DomainEvents.shouldRun = true;
+
 		await app.init();
 	});
 

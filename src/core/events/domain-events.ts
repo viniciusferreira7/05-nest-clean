@@ -8,6 +8,8 @@ export class DomainEvents {
 	private static handlersMap: Record<string, DomainEventCallback[]> = {};
 	private static markedEntities: Entity<unknown>[] = [];
 
+	public static shouldRun = true;
+
 	public static markEntityForDispatch(entity: Entity<unknown>) {
 		const entityFound = !!this.findMarkedEntityByID(entity.id);
 
@@ -67,6 +69,8 @@ export class DomainEvents {
 		const eventClassName: string = event.constructor.name;
 
 		const isEventRegistered = eventClassName in this.handlersMap;
+
+		if (!this.shouldRun) return;
 
 		if (isEventRegistered) {
 			const handlers = this.handlersMap[eventClassName];

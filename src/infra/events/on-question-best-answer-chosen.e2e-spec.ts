@@ -6,6 +6,7 @@ import { makeModuleRef } from "test/factories/make-module-ref";
 import { QuestionFactory } from "test/factories/make-question";
 import { StudentFactory } from "test/factories/make-student";
 import { waitFor } from "test/utils/wait-for";
+import { DomainEvents } from "@/core/events/domain-events";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 
 describe("On question best answer chosen (E2E)", () => {
@@ -25,6 +26,8 @@ describe("On question best answer chosen (E2E)", () => {
 		questionFactory = moduleRef.get(QuestionFactory);
 		answerFactory = moduleRef.get(AnswerFactory);
 		jwt = moduleRef.get(JwtService);
+
+		DomainEvents.shouldRun = true;
 
 		await app.init();
 	});
