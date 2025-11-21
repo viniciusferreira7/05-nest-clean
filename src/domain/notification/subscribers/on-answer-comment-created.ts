@@ -32,9 +32,9 @@ export class OnAnswerCommentCreated implements EventHandler {
 		await this.sendNotificationUseCase.execute({
 			recipientId: answer?.authorId.toString(),
 			title: "New comment in your answer",
-			content: `Comment is ${answerComment.content
+			content: `Comment is ${answerComment.content.length >= 30 ? answerComment.content
 				.substring(0, 30)
-				.concat("...")}`,
+				.concat("...") : answerComment.content}`,
 		});
 	}
 }

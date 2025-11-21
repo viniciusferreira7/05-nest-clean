@@ -30,7 +30,7 @@ export class OnAnswerCreated implements EventHandler {
 
 		await this.sendNotificationUseCase.execute({
 			recipientId: question?.authorId.toString(),
-			title: `New answer in "${question.title.substring(0, 40).concat("...")}"`,
+			title: `New answer in "${question.title.length >= 40 ? question.title.substring(0, 40).concat("...") : question.title}"`,
 			content: answer.except,
 		});
 	}

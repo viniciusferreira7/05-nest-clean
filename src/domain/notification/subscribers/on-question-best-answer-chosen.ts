@@ -33,12 +33,12 @@ export class OnQuestionBestAnswerChosenCreated implements EventHandler {
 
 		await this.sendNotificationUseCase.execute({
 			recipientId: answer?.authorId.toString(),
-			title: `Your answer was chosen as best answer of question: "${question.title
+			title: `Your answer was chosen as best answer of question: "${question.title.length >= 40 ? question.title
 				.substring(0, 40)
-				.concat("...")}"`,
-			content: `The answer that you send in ${question.title
+				.concat("...") : question.title}"`,
+			content: `The answer that you send in ${question.title.length >= 8 ? question.title
 				.substring(0, 8)
-				.concat("...")} by author!`,
+				.concat("...") : question.title} by author!`,
 		});
 	}
 }

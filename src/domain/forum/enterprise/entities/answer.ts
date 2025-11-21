@@ -40,7 +40,11 @@ export class Answer extends AggregateRoot<AnswerProps> {
 	}
 
 	get except() {
-		return this.props.content.substring(0, 120).trimEnd().concat("...");
+		if (this.props.content.length >= 120) {
+			return this.props.content.substring(0, 120).trimEnd().concat("...");
+		}
+
+		return this.props.content;
 	}
 
 	private touch() {
