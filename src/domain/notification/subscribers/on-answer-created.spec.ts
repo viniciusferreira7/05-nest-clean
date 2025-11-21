@@ -82,9 +82,11 @@ describe("On Answer Created", () => {
 			expect(sendNotificationSpy).toBeCalledTimes(1);
 			expect(sendNotificationSpy).toBeCalledWith({
 				recipientId: question?.authorId.toString(),
-				title: `New answer in "${question.title
-					.substring(0, 40)
-					.concat("...")}"`,
+				title: `New answer in "${
+					question.title.length >= 40
+						? question.title.substring(0, 40).concat("...")
+						: question.title
+				}"`,
 				content: answer.except,
 			});
 		});
