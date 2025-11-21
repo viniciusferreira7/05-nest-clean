@@ -51,12 +51,16 @@ describe("On question best answer chosen (E2E)", () => {
 			const notificationOnDatabase = await prisma.notification.findFirst({
 				where: {
 					recipientId: user.id.toString(),
-					title: `Your answer was chosen as best answer of question: "${question.title.length >= 40 ? question.title
-						.substring(0, 40)
-						.concat("...") : question.title}"`,
-					content: `The answer that you send in ${question.title.length >= 8 ? question.title
-						.substring(0, 8)
-						.concat("...") : question.title} by author!`,
+					title: `Your answer was chosen as best answer of question: "${
+						question.title.length >= 40
+							? question.title.substring(0, 40).concat("...")
+							: question.title
+					}"`,
+					content: `The answer that you send in ${
+						question.title.length >= 8
+							? question.title.substring(0, 8).concat("...")
+							: question.title
+					} by author!`,
 				},
 			});
 

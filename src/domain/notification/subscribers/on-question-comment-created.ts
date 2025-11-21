@@ -34,9 +34,11 @@ export class OnQuestionCommentCreated implements EventHandler {
 		await this.sendNotificationUseCase.execute({
 			recipientId: question?.authorId.toString(),
 			title: "New comment in your question",
-			content: `Comment is ${questionComment.content.length >= 30 ? questionComment.content
-				.substring(0, 30)
-				.concat("...") : questionComment.content}`,
+			content: `Comment is ${
+				questionComment.content.length >= 30
+					? questionComment.content.substring(0, 30).concat("...")
+					: questionComment.content
+			}`,
 		});
 	}
 }
