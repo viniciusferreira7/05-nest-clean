@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.11.0...v1.11.1) (2025-11-21)
+
+
+### Bug Fixes
+
+* correct unit test ([6072fa3](https://github.com/viniciusferreira7/05-nest-clean/commit/6072fa31ea8a3030ce7d2236aa8267f99a045926))
+
 # [1.11.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.10.0...v1.11.0) (2025-11-21)
 
 
