@@ -11,11 +11,11 @@ import { AnswerFactory } from "./make-answer";
 import { AnswerAttachmentFactory } from "./make-answer-attachment";
 import { AnswerCommentFactory } from "./make-answer-comment";
 import { AttachmentFactory } from "./make-attachment";
+import { NotificationFactory } from "./make-notification";
 import { QuestionFactory } from "./make-question";
 import { QuestionAttachmentFactory } from "./make-question-attachment";
 import { QuestionCommentFactory } from "./make-question-comment";
 import { StudentFactory } from "./make-student";
-import { NotificationFactory } from "./make-notification";
 
 export async function makeModuleRef(): Promise<TestingModule> {
 	const databaseUrl = process.env.DATABASE_URL;
