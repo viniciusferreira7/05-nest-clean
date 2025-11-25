@@ -15,6 +15,7 @@ import { QuestionFactory } from "./make-question";
 import { QuestionAttachmentFactory } from "./make-question-attachment";
 import { QuestionCommentFactory } from "./make-question-comment";
 import { StudentFactory } from "./make-student";
+import { NotificationFactory } from "./make-notification";
 
 export async function makeModuleRef(): Promise<TestingModule> {
 	const databaseUrl = process.env.DATABASE_URL;
@@ -29,6 +30,7 @@ export async function makeModuleRef(): Promise<TestingModule> {
 			AttachmentFactory,
 			QuestionAttachmentFactory,
 			AnswerAttachmentFactory,
+			NotificationFactory,
 		],
 	})
 		.overrideProvider(PrismaService)
