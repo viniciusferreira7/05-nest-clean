@@ -1,4 +1,3 @@
-import { da } from "@faker-js/faker/.";
 import { Injectable } from "@nestjs/common";
 import { DomainEvents } from "@/core/events/domain-events";
 import type { PaginationParams } from "@/core/repositories/pagination-params";
