@@ -18,6 +18,26 @@ services:
     volumes:
       - 05_nest_clean_data:/var/lib/postgresql/data
 
+  05-nest-clean-redis:
+    container_name: 05-nest-clean-redis
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    command: redis-server --appendonly yes
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    networks:
+      - 05-nest-clean-network
+    volumes:
+      - 05_nest_clean_redis_data:/data
+
   server:
     build:
       context: .
@@ -28,10 +48,15 @@ services:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_URL: ${DATABASE_URL}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
       - 3333:3333
     depends_on:
       05-nest-clean-postgresql:
+        condition: service_healthy
+      05-nest-clean-redis:
         condition: service_healthy
     networks:
       - 05-nest-clean-network
@@ -42,3 +67,4 @@ networks:
 
 volumes:
   05_nest_clean_data:
+  05_nest_clean_redis_data:
