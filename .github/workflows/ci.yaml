@@ -128,7 +128,7 @@ jobs:
           - 5432:5432
 
       redis:
-        image: redis:7-alpine
+        image: redis:7.2.0
         options: >-
           --health-cmd="redis-cli --raw incr ping"
           --health-interval=10s
