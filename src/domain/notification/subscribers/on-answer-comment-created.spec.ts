@@ -72,9 +72,11 @@ describe("On Answer Comment Created", () => {
 			expect(sendNotificationSpy).toBeCalledWith({
 				recipientId: answer?.authorId.toString(),
 				title: "New comment in your answer",
-				content: `Comment is ${answerComment.content
-					.substring(0, 30)
-					.concat("...")}`,
+				content: `Comment is ${
+					answerComment.content.length >= 30
+						? answerComment.content.substring(0, 30).concat("...")
+						: answerComment.content
+				}`,
 			});
 		});
 	});
