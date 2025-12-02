@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.13.0...v1.13.1) (2025-12-02)
+
+
+### Bug Fixes
+
+* correct unit tests to events ([ac69151](https://github.com/viniciusferreira7/05-nest-clean/commit/ac69151343d28961426769c60a2d6af30db21ff0))
+
 # [1.13.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.12.0...v1.13.0) (2025-12-02)
 
 
