@@ -1,3 +1,14 @@
+# [1.13.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.12.0...v1.13.0) (2025-12-02)
+
+
+### Features
+
+* add cache into prisma repository ([4611a15](https://github.com/viniciusferreira7/05-nest-clean/commit/4611a15d933f6a681fb1b8d1e7993977764d1750))
+* create cache module ([5987589](https://github.com/viniciusferreira7/05-nest-clean/commit/598758961595545f9250271603fd272707f53b55))
+* create read notification controller ([a9700d4](https://github.com/viniciusferreira7/05-nest-clean/commit/a9700d41499116eeaffb8495748f2b68257a92bd))
+* create redis service ([df4f549](https://github.com/viniciusferreira7/05-nest-clean/commit/df4f549746fc53f65b57b5f8b00410c34d8ec0af))
+* implement redis cache repository ([7e5fc17](https://github.com/viniciusferreira7/05-nest-clean/commit/7e5fc175523dec70b22c2de22ff7bd1262c57b3a))
+
 # [1.12.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.11.1...v1.12.0) (2025-11-21)
 
 
