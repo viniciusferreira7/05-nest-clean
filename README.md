@@ -30,6 +30,7 @@ A modern REST API for a forum/Q&A system built with NestJS and Clean Architectur
 - **[TypeScript](https://www.typescriptlang.org/)** - Static type checking
 - **[Prisma](https://www.prisma.io/)** - Next-generation ORM
 - **[PostgreSQL](https://www.postgresql.org/)** - Relational database
+- **[Redis](https://redis.io/)** - In-memory data store for caching
 - **[JWT](https://jwt.io/)** - JSON Web Tokens for authentication
 - **[Biome](https://biomejs.dev/)** - Fast formatter and linter
 - **[Vitest](https://vitest.dev/)** - Blazing fast unit testing
@@ -54,6 +55,7 @@ A modern REST API for a forum/Q&A system built with NestJS and Clean Architectur
 - 📊 **Slug Generation** - SEO-friendly URLs for questions
 - ⏰ **Timestamps** - Automatic creation and update tracking
 - ✂️ **Smart Text Truncation** - Conditional substring display with ellipsis only when necessary
+- 💾 **Redis Caching** - High-performance in-memory caching for frequently accessed data
 
 ## 🏗 Architecture
 
@@ -69,10 +71,18 @@ src/
 ├── domain/           # Business logic layer
 │   ├── forum/        # Forum bounded context
 │   │   ├── application/  # Use cases and interfaces
-│   │   └── enterprise/   # Domain entities and events
+│   │   ├── enterprise/   # Domain entities and events
+│   │   └── repositories/ # Forum repository implementations
 │   └── notification/ # Notification bounded context
+│       ├── application/  # Use cases and interfaces
+│       ├── enterprise/   # Domain entities and events
+│       └── repositories/ # Notification repository implementations
 └── infra/           # Infrastructure layer
     ├── auth/        # JWT authentication
+    ├── cache/       # Redis cache implementation
+    │   ├── cache.module.ts     # Cache module definition
+    │   ├── redis.service.ts    # Redis service wrapper
+    │   └── cache.repository.ts # Cache repository implementation
     ├── cryptography/ # Password hashing
     ├── database/    # Prisma repositories
     ├── env/         # Environment configuration
@@ -126,6 +136,9 @@ DATABASE_NAME=nest_clean
 DATABASE_URL=postgresql://postgres:your_password@localhost:5432/nest_clean
 JWT_PRIVATE_KEY=your_base64_private_key
 JWT_PUBLIC_KEY=your_base64_public_key
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=your_redis_password
 ```
 
 ### 4. Database setup
@@ -248,6 +261,7 @@ The project uses GitHub Actions with a comprehensive CI/CD pipeline:
 
 3. **E2E Tests** (`test-e2e`)
    - Start PostgreSQL service
+   - Start Redis service for caching
    - Run database migrations
    - Execute end-to-end tests
 
