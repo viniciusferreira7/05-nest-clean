@@ -54,8 +54,6 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 		if (cacheHit) {
 			const cacheData = JSON.parse(cacheHit);
 
-			console.log({ cacheData });
-
 			return PrismaQuestionDetailsMapper.toDomain(cacheData);
 		}
 

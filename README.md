@@ -121,13 +121,14 @@ pnpm install
 
 ### 3. Environment setup
 
-Copy the example environment file and configure your variables:
+Copy the example environment files and configure your variables:
 
 ```bash
 cp .env.example .env
+cp .env.test.example .env.test
 ```
 
-Required environment variables:
+Required environment variables for `.env`:
 ```env
 NODE_ENV=dev
 DATABASE_USERNAME=postgres
@@ -138,12 +139,29 @@ JWT_PRIVATE_KEY=your_base64_private_key
 JWT_PUBLIC_KEY=your_base64_public_key
 REDIS_HOST=localhost
 REDIS_PORT=6379
+REDIS_DB=0
 REDIS_PASSWORD=your_redis_password
 ```
 
-### 4. Database setup
+Required environment variables for `.env.test`:
+```env
+# AWS S3 (for upload tests)
+AWS_BUCKET_NAME=your_test_bucket
+AWS_ACCESS_KEY_ID=your_test_access_key
+AWS_SECRETE_ACCESS_KEY_ID=your_test_secret_key
 
-Start PostgreSQL using Docker:
+# Redis (use same password as .env, different DB for isolation)
+REDIS_PORT=6379
+REDIS_HOST="127.0.0.1"
+REDIS_DB=1
+REDIS_PASSWORD=your_redis_password  # Same as .env
+```
+
+> **Note**: The test environment uses Redis database 1 (`REDIS_DB=1`) to isolate test data from development data (which uses database 0), but they share the same Redis instance and password.
+
+### 4. Database and Redis setup
+
+Start PostgreSQL and Redis using Docker:
 ```bash
 pnpm run prestart:dev
 ```
@@ -151,6 +169,11 @@ pnpm run prestart:dev
 Run database migrations:
 ```bash
 pnpm run db:deploy
+```
+
+Verify Redis is running:
+```bash
+docker ps | grep redis
 ```
 
 ## 🎯 Usage
@@ -226,7 +249,7 @@ pnpm run test:cov
 
 ### E2E Tests
 
-The project includes comprehensive end-to-end tests with a real PostgreSQL database:
+The project includes comprehensive end-to-end tests with real PostgreSQL and Redis:
 
 ```bash
 pnpm run test:e2e
@@ -237,12 +260,26 @@ Run E2E tests in watch mode:
 pnpm run test:e2e:watch
 ```
 
+#### E2E Test Infrastructure
+
+E2E tests use isolated environments for both PostgreSQL and Redis:
+
+- **PostgreSQL**: Each test suite creates a unique schema using a random UUID, ensuring complete isolation between test runs
+- **Redis**: Tests use database 1 (`REDIS_DB=1`) while development uses database 0, preventing conflicts
+- **Automatic Cleanup**:
+  - PostgreSQL schemas are dropped after all tests complete
+  - Redis cache is flushed after each individual test (`afterEach`)
+  - Redis connection is closed after the test suite finishes
+
+The test setup is configured in [test/setup-e2e.ts](test/setup-e2e.ts) and runs automatically before each test suite.
+
 ### Test Strategy
 
 - **Unit Tests**: Test individual use cases and domain entities with in-memory repositories
-- **E2E Tests**: Test complete HTTP flows with real database integration
+- **E2E Tests**: Test complete HTTP flows with real database and cache integration
 - **Test Factories**: Reusable entity factories for consistent test data
 - **Mock Repositories**: In-memory implementations for fast unit testing
+- **Cache Testing**: Verify Redis caching behavior in E2E tests with automatic cleanup
 
 ## 🔄 CI/CD
 
@@ -263,7 +300,7 @@ The project uses GitHub Actions with a comprehensive CI/CD pipeline:
    - Start PostgreSQL service
    - Start Redis service for caching
    - Run database migrations
-   - Execute end-to-end tests
+   - Execute end-to-end tests with automatic Redis cleanup between tests
 
 4. **Build** (`build`)
    - Build application for production
