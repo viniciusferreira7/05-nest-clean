@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.13.1...v1.14.0) (2025-12-05)
+
+
+### Features
+
+* reset redis, after each sut of test E2E ([b350b31](https://github.com/viniciusferreira7/05-nest-clean/commit/b350b31faef760f22d0081865d4de8fcd8e0fa22))
+
 ## [1.13.1](https://github.com/viniciusferreira7/05-nest-clean/compare/v1.13.0...v1.13.1) (2025-12-02)
 
 
