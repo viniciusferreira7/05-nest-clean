@@ -4,6 +4,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { PrismaClient } from "generated/prisma";
 
 import { AppModule } from "@/infra/app.module";
+import { CacheModule } from "@/infra/cache/cache.module";
 import { DatabaseModule } from "@/infra/database/database.module";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { EventsModule } from "@/infra/events/events.module";
@@ -20,7 +21,7 @@ import { StudentFactory } from "./make-student";
 export async function makeModuleRef(): Promise<TestingModule> {
 	const databaseUrl = process.env.DATABASE_URL;
 	const moduleRef = await Test.createTestingModule({
-		imports: [AppModule, DatabaseModule, EventsModule],
+		imports: [AppModule, DatabaseModule, EventsModule, CacheModule],
 		providers: [
 			StudentFactory,
 			QuestionFactory,

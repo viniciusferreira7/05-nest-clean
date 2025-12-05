@@ -6,10 +6,14 @@ dotenv.config({ path: ".env.test", override: true });
 
 import { execSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { PrismaClient } from "generated/prisma";
+
 import { DomainEvents } from "@/core/events/domain-events";
+import { PrismaClient } from "generated/prisma";
+import Redis from "ioredis";
 
 const prisma = new PrismaClient();
+
+let redis: Redis;
 
 function generateUniqueDatabaseURL(schemaId: string) {
 	if (!process.env.DATABASE_URL) {
@@ -36,10 +40,28 @@ beforeAll(async () => {
 	DomainEvents.shouldRun = false;
 
 	execSync("pnpm prisma migrate deploy");
+
+	redis = new Redis({
+		host: process.env.REDIS_HOST,
+		port: Number(process.env.REDIS_PORT) || 6379,
+		db: Number(process.env.REDIS_DB) || 0,
+		password: process.env.REDIS_PASSWORD,
+	});
+});
+
+afterEach(async () => {
+	if (redis) {
+		await redis.flushdb();
+	}
 });
 
 afterAll(async () => {
 	await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId}" CASCADE`);
 
 	await prisma.$disconnect();
+
+	if (redis) {
+		await redis.flushdb();
+		await redis.quit();
+	}
 });

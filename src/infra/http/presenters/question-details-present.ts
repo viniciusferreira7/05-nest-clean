@@ -11,7 +11,10 @@ export class QuestionDetailsPresenter {
 			authorName: questionDetails.authorName,
 			authorId: questionDetails.authorId.toString(),
 			bestAnswerId: questionDetails.bestAnswerId?.toString(),
-			attachments: questionDetails.attachments.map(AttachmentPresenter.toHttp),
+			attachments:
+				questionDetails.attachments?.length > 0
+					? questionDetails.attachments?.map(AttachmentPresenter.toHttp)
+					: [],
 			createdAt: questionDetails.createdAt,
 			updatedAt: questionDetails.updatedAt,
 		};
