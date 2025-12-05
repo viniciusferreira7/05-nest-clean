@@ -315,12 +315,6 @@ refactor: code refactoring
 chore: maintenance tasks
 ```
 
-## 📚 Documentation
-
-Detailed documentation for specific features and systems:
-
-- **[Smart Text Truncation](./docs/SMART_TEXT_TRUNCATION.md)** - Learn about the intelligent text truncation system used in notifications and content display
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

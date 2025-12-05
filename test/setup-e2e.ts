@@ -6,10 +6,9 @@ dotenv.config({ path: ".env.test", override: true });
 
 import { execSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
-
-import { DomainEvents } from "@/core/events/domain-events";
 import { PrismaClient } from "generated/prisma";
 import Redis from "ioredis";
+import { DomainEvents } from "@/core/events/domain-events";
 
 const prisma = new PrismaClient();
 
