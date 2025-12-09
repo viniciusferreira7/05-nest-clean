@@ -9,17 +9,20 @@ import { randomUUID } from "node:crypto";
 import { PrismaClient } from "generated/prisma";
 import Redis from "ioredis";
 import { DomainEvents } from "@/core/events/domain-events";
+import { envSchema } from "@/infra/env/env";
 
 const prisma = new PrismaClient();
+
+const env = envSchema.parse(process.env);
 
 let redis: Redis;
 
 function generateUniqueDatabaseURL(schemaId: string) {
-	if (!process.env.DATABASE_URL) {
+	if (!env.DATABASE_URL) {
 		throw new Error("Please provide a DATABASE_URL environment variable");
 	}
 
-	const url = new URL(process.env.DATABASE_URL);
+	const url = new URL(env.DATABASE_URL);
 
 	url.searchParams.set("schema", schemaId);
 	url.searchParams.set("connect_timeout", "1000");
@@ -41,10 +44,10 @@ beforeAll(async () => {
 	execSync("pnpm prisma migrate deploy");
 
 	redis = new Redis({
-		host: process.env.REDIS_HOST,
-		port: Number(process.env.REDIS_PORT) || 6379,
-		db: Number(process.env.REDIS_DB) || 0,
-		password: process.env.REDIS_PASSWORD,
+		host: env.REDIS_HOST,
+		port: Number(env.REDIS_PORT) || 6379,
+		db: Number(env.REDIS_DB) || 1,
+		password: env.REDIS_PASSWORD,
 	});
 });
 
