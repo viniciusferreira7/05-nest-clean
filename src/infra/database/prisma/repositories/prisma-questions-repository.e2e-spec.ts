@@ -45,6 +45,59 @@ describe("Prisma questions repository (E2E)", () => {
 			questionFactory.makePrismaQuestion({ authorId: user?.id }),
 			questionFactory.makePrismaQuestion({ authorId: user?.id }),
 			questionFactory.makePrismaQuestion({
+				title: "New question 1",
+				authorId: user?.id,
+			}),
+		]);
+
+		const slug = question.slug;
+
+		const questionDetails = await questionsRepository.findDetailsBySlug(
+			slug.value,
+		);
+
+		const cacheKey = `question:${slug.value}:details`;
+
+		const cached = await cacheRepository.get(cacheKey);
+
+		expect(cached).toEqual(JSON.stringify(questionDetails));
+	});
+
+	it("should return cached question details on subsequent calls", async () => {
+		const user = await studentFactory.makePrismaStudent({
+			name: "John Doe",
+		});
+
+		const [, , question] = await Promise.all([
+			questionFactory.makePrismaQuestion({ authorId: user?.id }),
+			questionFactory.makePrismaQuestion({ authorId: user?.id }),
+			questionFactory.makePrismaQuestion({
+				title: "New question 2",
+				authorId: user?.id,
+			}),
+		]);
+
+		const slug = question.slug;
+
+		const cacheKey = `question:${slug.value}:details`;
+		await cacheRepository.set(cacheKey, JSON.stringify({ empty: true }));
+
+		const questionDetails = await questionsRepository.findDetailsBySlug(
+			slug.value,
+		);
+
+		expect(questionDetails).toEqual(expect.objectContaining({ empty: true }));
+	});
+
+	it("should reset question details cache when saving the question", async () => {
+		const user = await studentFactory.makePrismaStudent({
+			name: "John Doe",
+		});
+
+		const [, , question] = await Promise.all([
+			questionFactory.makePrismaQuestion({ authorId: user?.id }),
+			questionFactory.makePrismaQuestion({ authorId: user?.id }),
+			questionFactory.makePrismaQuestion({
 				title: "New question 3",
 				authorId: user?.id,
 			}),
@@ -52,23 +105,14 @@ describe("Prisma questions repository (E2E)", () => {
 
 		const slug = question.slug;
 
-		await questionsRepository.findDetailsBySlug(slug.value);
-
 		const cacheKey = `question:${slug.value}:details`;
+		await cacheRepository.set(cacheKey, JSON.stringify({ empty: true }));
+
+		await questionsRepository.save(question);
 
 		const cached = await cacheRepository.get(cacheKey);
 
-		const prismaQuestion = await prisma.question.findUnique({
-			where: {
-				slug: slug.value,
-			},
-			include: {
-				author: true,
-				attachments: true,
-			},
-		});
-
-		expect(cached).toEqual(JSON.stringify(prismaQuestion));
+		expect(cached).toBeNull();
 	});
 
 	afterAll(async () => {
