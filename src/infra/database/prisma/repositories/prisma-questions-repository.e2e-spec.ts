@@ -52,15 +52,23 @@ describe("Prisma questions repository (E2E)", () => {
 
 		const slug = question.slug;
 
-		const questionDetails = await questionsRepository.findDetailsBySlug(
-			slug.value,
-		);
+		await questionsRepository.findDetailsBySlug(slug.value);
+
+		const prismaQuestion = await prisma.question.findUnique({
+			where: {
+				slug: slug.value,
+			},
+			include: {
+				author: true,
+				attachments: true,
+			},
+		});
 
 		const cacheKey = `question:${slug.value}:details`;
 
 		const cached = await cacheRepository.get(cacheKey);
 
-		expect(cached).toEqual(JSON.stringify(questionDetails));
+		expect(cached).toEqual(JSON.stringify(prismaQuestion));
 	});
 
 	it("should return cached question details on subsequent calls", async () => {
@@ -80,13 +88,22 @@ describe("Prisma questions repository (E2E)", () => {
 		const slug = question.slug;
 
 		const cacheKey = `question:${slug.value}:details`;
-		await cacheRepository.set(cacheKey, JSON.stringify({ empty: true }));
+		let cached = await cacheRepository.get(cacheKey);
 
-		const questionDetails = await questionsRepository.findDetailsBySlug(
-			slug.value,
+		expect(cached).toBeNull();
+
+		await questionsRepository.findDetailsBySlug(slug.value);
+
+		cached = await cacheRepository.get(cacheKey);
+
+		if (!cached) {
+			throw new Error("It should not be returning null");
+		}
+
+		expect(cached).not.toBeNull();
+		expect(JSON.parse(cached)).toEqual(
+			expect.objectContaining({ id: question.id.toString() }),
 		);
-
-		expect(questionDetails).toEqual(expect.objectContaining({ empty: true }));
 	});
 
 	it("should reset question details cache when saving the question", async () => {
