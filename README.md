@@ -1,5 +1,3 @@
-# ⚠️ WIP
-
 # Nest Clean - Forum API
 
 A modern REST API for a forum/Q&A system built with NestJS and Clean Architecture principles, featuring complete CRUD operations, authentication, and real-time notifications.
